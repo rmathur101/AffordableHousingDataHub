@@ -1,0 +1,33 @@
+.top-nav-links {
+	float: right;
+	margin-right: 100px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 47px;
+	font-family: sans-serif;
+	color: white;
+}
+
+.top-nav-links > li {
+	display: inline-block;
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+.top-nav {
+	background-color: #006666;
+	min-height: 100px;
+	color: white;
+	overflow: auto;
+}
+
+.top-nav-header {
+	font-size: 35px;
+	font-family: sans-serif;
+}
+
+.top-nav-header-container {
+	float: left;
+	padding-top: 31px;
+	padding-left: 20px;
+}
