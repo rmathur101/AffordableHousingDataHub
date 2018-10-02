@@ -9,7 +9,7 @@ module.exports.initSession = function() {
         secret: fs.readFileSync(initConfig.configPath + 'session_secret.txt', 'utf8'),
         cookie: {secure: false},
         resave: false, // TODO: docs says says that should check if chosen store has 'touch' method, if not then set to true
-        saveUninitialized: true
+        saveUninitialized: true,
     }
     if (process.env.NODE_ENV == "production") {
         // TODO: set up https / ssl certificate

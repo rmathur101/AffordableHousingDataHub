@@ -17,6 +17,16 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: "babel-loader",
                 query: { presets: ['es2015'] }
+            },
+            {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader']
+            }
+        ],
+        rules: [
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
     },

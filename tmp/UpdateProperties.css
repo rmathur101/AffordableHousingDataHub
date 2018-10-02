@@ -1,0 +1,23 @@
+#update-properties-table {
+	padding: '50px 50px 50px 50px'
+}
+
+.header {
+	width: 100%;
+	height: 70px;
+	background-color: #337ab7;
+	text-align: center;
+	font-weight: 200;
+	letter-spacing: 20;
+}
+
+.header-title {
+	font-size: 45px;
+	color: white;
+	text-transform: uppercase;
+}
+
+.table-cell-red {
+	background-color: pink;
+	/*opacity: 0.1;*/
+}

@@ -1,0 +1,8 @@
+#login_failed_msg, #login_error_msg {
+	display: none;
+	color: red;
+}
+
+.login_input {
+	width: 200px;
+}
