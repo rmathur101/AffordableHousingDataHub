@@ -10,7 +10,7 @@ class PrivateRoute extends Component {
 	render() {
 		const {component: Component, ...rest} = this.props;
 
-		if (localStorage.getItem('isLoggedIn') == 'true') {
+		if (localStorage.getItem('isLoggedIn') == 'true' && localStorage.getItem('email')) {
 			return <Route {...rest} render={(props) => <Component {...props} />}/>
 		} else {
 			return <Redirect

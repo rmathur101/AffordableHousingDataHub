@@ -29,7 +29,7 @@ ReactDOM.render((
     <BrowserRouter>
         <Switch>
             <Route exact path="/" component={Login} />
-            <Route exact path="/update_property/:id" component={UpdateProperty} />
+            <PrivateRoute exact path="/update_property/:id" component={UpdateProperty} />
             <PrivateRoute exact path='/update_properties' component={UpdateProperties} />
         </Switch>
     </BrowserRouter>

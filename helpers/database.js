@@ -4,6 +4,12 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const thisFilename = 'database.js';
 
+//TODO: after talking with britney, it seems that i don't need a try catch in these secondary functions,
+// i need on try catch in my top level function (that would be in my route), and all thrown erros in these,
+// secondary functions, should bubble up there? i guess that is if there is a thrown error, instead of a return
+// then that error will be thrown to the try catch, what i need to do though, is make sure that i am throwing errors
+// when values are not what are expected
+
 async function updateSessionId(userId, sessionId) {
 	return new Promise(async (resolve, reject) => {
 		var error = null;
@@ -60,6 +66,26 @@ async function doesUserExist(email, pass) {
 	});
 }
 
+async function getUser(email) {
+	try {
+		var conn = await getDatabaseConnection();
+		var res = await queryDatabase(
+			conn,
+			'AffordableHousingDataHub',
+			`SELECT * FROM Users WHERE email = ${mysql.escape(email)}`
+		);
+		await closeDatabaseConnection(conn);
+
+		if (res.length > 1) {
+		// if (true) {
+			throw new Error('getUser() found multiple users');
+		}
+	} catch (e) {
+		throw new Error(thisFilename + ' => getUser(), caught exception:\n' + e.stack);
+	}
+	return res;
+}
+
 async function createUser(firstName, lastName, org, email, passwd) {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -70,9 +96,9 @@ async function createUser(firstName, lastName, org, email, passwd) {
 				'AffordableHousingDataHub',
 				`INSERT INTO Users (first_name, last_name, org, email, passwd) VALUES (${mysql.escape(firstName)}, ${mysql.escape(lastName)}, ${mysql.escape(org)}, ${mysql.escape(email)}, ${mysql.escape(passwdHash)})`
 			);
-			closeDatabaseConnection(conn);
+			await closeDatabaseConnection(conn);
 		} catch(e) {
-			closeDatabaseConnection(conn);
+			await closeDatabaseConnection(conn);
 			return reject(new Error(thisFilename + ' => createUser(), caught exception:\n' + e.stack)); // TODO: is this right?
 		}
 
@@ -82,25 +108,59 @@ async function createUser(firstName, lastName, org, email, passwd) {
 
 async function getUpdatePropertiesList() {
 	// TODO: properly handle errors
-	var conn = await getDatabaseConnection();
-	var res = await queryDatabase(
-		conn,
+	// var conn = await getDatabaseConnection();
+	// var res = await queryDatabase(
+	// 	conn,
+	// 	'AffordableHousingDataHub',
+	// 	'SELECT id, property_name, address, phone, email, website, total_income_restricted_units, total_section_8_units, zipcode FROM Properties'
+	// );
+	// await closeDatabaseConnection(conn);
+
+	var res = query(
 		'AffordableHousingDataHub',
-		'SELECT id, property_name, address, phone, email, website, total_income_restricted_units, total_section_8_units FROM Properties'
+		'SELECT id, property_name, address, phone, email, website, total_income_restricted_units, total_section_8_units, zipcode FROM Properties'
 	);
-	await closeDatabaseConnection(conn);
+
+	return res;
+}
+
+// create conn, do query, close connection
+async function query(db, query) {
+	// in order to test your theory, your theory is that you don't need a try catch, because
+	// you don't need to catch an error here, if there is an error, then it should be caught in a more upstream
+	// block, but if there is an error in queryDatabase for example, does that mean that closeDatbaseConnection will
+	// not be called?
+
+	// try {
+		var conn = await getDatabaseConnection();
+		var res = await queryDatabase(
+			conn,
+			db,
+			query
+		);
+		await closeDatabaseConnection(conn);
+	// } catch (e) {
+		// await closeDatabaseConnection(conn);
+		// throw e;
+	// }
+
 	return res;
 }
 
 async function getProperty(id) {
 	// TODO: properly handle errors
-	var conn = await getDatabaseConnection();
-	var res = await queryDatabase(
-		conn,
+	// var conn = await getDatabaseConnection();
+	// var res = await queryDatabase(
+	// 	conn,
+	// 	'AffordableHousingDataHub',
+	// 	`SELECT * from Properties WHERE id = ${id}`
+	// );
+	// await closeDatabaseConnection(conn);
+
+	var res = await query(
 		'AffordableHousingDataHub',
 		`SELECT * from Properties WHERE id = ${id}`
 	);
-	await closeDatabaseConnection(conn);
 	return res;
 }
 
@@ -118,7 +178,7 @@ async function queryDatabase(mysqlConnection, database, query) {
 }
 
 function closeDatabaseConnection(mysqlConnection) {
-	if (!mysqlConnection) {
+	if (!mysqlConnection || !mysqlConnection.threadId) {
 		return;
 	}
 	try {
@@ -168,4 +228,6 @@ module.exports.queryDatabase = queryDatabase;
 module.exports.getUpdatePropertiesList = getUpdatePropertiesList;
 module.exports.getProperty = getProperty;
 module.exports.updateSessionId = updateSessionId;
+module.exports.getUser = getUser;
+module.exports.query = query;
 

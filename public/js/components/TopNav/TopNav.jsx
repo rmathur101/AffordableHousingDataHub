@@ -11,7 +11,7 @@ class TopNav extends Component {
 		return (
 			<div className='top-nav'>
 				<div className='top-nav-header-container'>
-					<span className='top-nav-header'>Austin Affordable Housing Data Hub</span>
+					<span className='top-nav-header'>Austin Affordable Housing Data Portal</span>
 				</div>
 				<ul className='top-nav-links'>
 					<li>Update Properties</li>

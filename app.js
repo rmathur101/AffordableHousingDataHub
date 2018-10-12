@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var logger = (require("./helpers/logger.js")).logger;
 var sessionHelper = require("./helpers/sessions.js");
 var dbHelper = require('./helpers/database.js');
+var propertyFieldsMap = require('./helpers/propertyFieldsMap').fieldsMap;
 var csv = require('fast-csv');
 var _ = require("underscore");
 
@@ -16,16 +17,32 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(sessionHelper.initSession());
 
 app.get('/update_properties_list', async (req, res) => {
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'})
+        }
 
-    // TODO: add try catch
-    var result = await dbHelper.getUpdatePropertiesList();
-    res.status(200).send({success: true, data: result});
+        var result = await dbHelper.getUpdatePropertiesList();
+        return res.status(200).send({success: true, data: result});
+    } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
 });
 
 app.get('/property', async(req, res) => {
-    var propertyId = req.query.propertyId;
-    var result = await dbHelper.getProperty(propertyId);
-    res.status(200).send({success: true, data: result});
+    // console.log(propertyFieldsMap);
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'})
+        }
+        var propertyId = req.query.propertyId;
+        var result = await dbHelper.getProperty(propertyId);
+        return res.status(200).send({success: true, data: result[0], fieldsMap: propertyFieldsMap});
+    } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
 });
 
 

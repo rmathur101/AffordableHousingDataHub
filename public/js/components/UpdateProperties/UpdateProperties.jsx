@@ -5,68 +5,50 @@ import {
 } from 'react-router-dom';
 // axios
 import axios from 'axios';
-// libraries
-import 'bootstrap/dist/css/bootstrap.min.css';
 // dev files
 import './UpdateProperties.css';
 import {TopNav} from '../TopNav/TopNav.jsx';
+import { UpdatePropertiesTable } from '../UpdatePropertiesTable/UpdatePropertiesTable.jsx';
 import { debugLog } from "../../utilities.jsx";
 
 class UpdateProperties extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			redirectTo: null,
+			showUpdateProperties: false
+		}
 
-		const self = this;
-
-		axios.get('update_properties_list')
+		var email = localStorage.getItem('email');
+		var queryString = '/update_properties_list?userEmail=' + email;
+		axios.get(queryString)
 			.then((res) => {
-				// TODO: should validate that user is logged in on the backend before returning data
-				console.log('what is res');
 				console.log(res);
-				self.setState({data: res.data.data});
+				this.setState({data: res.data.data, showUpdateProperties: true});
 			})
 			.catch((e) => {
-				console.log('inside catch');
-				console.log(e);
+				console.log(e.response);
+				// if not authorized, we want to redirect to login page
+				if (e && e.response && !e.response.data.success && e.response.data.redirect) {
+					this.setState({redirectTo: '/'});
+					console.log('something');
+				}
 			});
 	}
 
 	render() {
-		return (
-			<div>
-				<TopNav/>
-				<table className="table">
-				  <thead>
-				    <tr>
-				      <th scope="col">#</th>
-				      <th scope="col">First</th>
-				      <th scope="col">Last</th>
-				      <th scope="col">Handle</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				    <tr>
-				      <th scope="row">1</th>
-				      <td>Mark</td>
-				      <td>Otto</td>
-				      <td>@mdo</td>
-				    </tr>
-				    <tr>
-				      <th scope="row">2</th>
-				      <td>Jacob</td>
-				      <td>Thornton</td>
-				      <td>@fat</td>
-				    </tr>
-				    <tr>
-				      <th scope="row">3</th>
-				      <td>Larry</td>
-				      <td>the Bird</td>
-				      <td>@twitter</td>
-				    </tr>
-				  </tbody>
-				</table>
-			</div>
-		);
+		if (this.state.redirectTo) {
+			return <Redirect to={this.state.redirectTo} />
+		}
+		if (this.state.showUpdateProperties) {
+			return (
+				<div>
+					<TopNav/>
+					<UpdatePropertiesTable propertyData={this.state.data} />
+				</div>
+			);
+		}
+		return <div></div>
 	}
 }
 
