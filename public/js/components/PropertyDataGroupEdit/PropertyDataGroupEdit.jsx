@@ -138,6 +138,12 @@ class PropertyDataGroupEdit extends Component {
 		return group;
 	}
 
+	renderUnitInformationEdit() {
+		return (
+			<button>Add Another Unit Type</button>
+		);
+	}
+
 	render() {
 		return (
 			<div className='property-group'>
@@ -145,9 +151,14 @@ class PropertyDataGroupEdit extends Component {
 					<img onClick={this.handleSortRightClick.bind(this)} className='dropdown-triangle' src={this.state.showGroup ? '/img/sort-down.png' : '/img/sort-right.png'}/>
 					<u>{this.state.groupName}</u>
 				</span>
-			{ this.state.showGroup &&
+			{ this.state.showGroup && this.state.groupName != 'Unit Information' &&
 				<div>
 					{this.renderGroupEdit()}
+				</div>
+			}
+			{ this.state.showGroup && this.state.groupName == 'Unit Information' &&
+				<div>
+					{this.renderUnitInformationEdit()}
 				</div>
 			}
 			</div>
