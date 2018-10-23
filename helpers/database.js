@@ -2,13 +2,69 @@ const initConfig = require('../initConfig.js');
 const fs = require('fs');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const fieldsMap = require('./propertyFieldsMap.js').fieldsMap;
 const thisFilename = 'database.js';
+const _ = require('underscore');
+const moment = require('moment');
 
 //TODO: after talking with britney, it seems that i don't need a try catch in these secondary functions,
 // i need on try catch in my top level function (that would be in my route), and all thrown erros in these,
 // secondary functions, should bubble up there? i guess that is if there is a thrown error, instead of a return
 // then that error will be thrown to the try catch, what i need to do though, is make sure that i am throwing errors
 // when values are not what are expected
+
+async function updateData(updateDataObj, propertyId) {
+	// TODO: if there is no propertyId, throw error
+
+	// iterate through updateDataObj
+	// key is the field name, value is an object that might look like this {value: x, verify: y}
+	// given the property id, the field name, and the value, we want to update the information
+	for (var field in updateDataObj) {
+		if (_.has(fieldsMap, field) && fieldsMap[field].active) {
+
+			var value = updateDataObj[field].value;
+			var verify = updateDataObj[field].verify;
+
+			console.log(verify);
+
+			// update PropertyVerifications
+			if (!(verify == undefined)) {
+				var verifyExists = await query(
+					'AffordableHousingDataHub',
+					`SELECT id from PropertyVerifications WHERE field = '${field}' AND property_id = ${propertyId}`
+				);
+
+				if (verifyExists.length > 0) {
+					var verifyId = verifyExists[0].id;
+					await query(
+						'AffordableHousingDataHub',
+						`UPDATE PropertyVerifications SET verified = ${verify}, last_updated = '${moment().format('YYYY-MM-DD HH:mm:ss')}' WHERE id = ${verifyId}`
+					);
+				} else {
+					await query(
+						'AffordableHousingDataHub',
+						`INSERT INTO PropertyVerifications (verified, property_id, field, last_updated) VALUES (${mysql.escape(verify)}, ${mysql.escape(propertyId)}, ${mysql.escape(field)}, '${moment().format('YYYY-MM-DD HH:mm:ss')}')`
+					);
+				}
+
+			}
+
+			// value could be null for example if they put unknown
+			if (!(value == undefined)) {
+				// check that field is in fieldsMap, and that it is active
+				// run sql command to update that one field
+				await query(
+					'AffordableHousingDataHub',
+					`UPDATE Properties SET ${field} = ${mysql.escape(value)} WHERE id =${mysql.escape(propertyId)}`
+				);
+			}
+
+			if (!(verify == null || verify == undefined)) {
+
+			}
+		}
+	}
+}
 
 async function updateSessionId(userId, sessionId) {
 	return new Promise(async (resolve, reject) => {
@@ -118,7 +174,7 @@ async function getUpdatePropertiesList() {
 
 	var res = query(
 		'AffordableHousingDataHub',
-		'SELECT id, property_name, address, phone, email, website, total_income_restricted_units, total_section_8_units, zipcode FROM Properties'
+		'SELECT Properties.id, property_name, address, phone, Properties.email as email, website, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id'
 	);
 
 	return res;
@@ -162,6 +218,81 @@ async function getProperty(id) {
 		`SELECT * from Properties WHERE id = ${id}`
 	);
 	return res;
+}
+
+async function getPropertyVerifications(id) {
+	function reformat(result) {
+		var obj = {};
+		if (res.length > 0) {
+			for (var r of res) {
+				obj[r.field] = {verified: r.verified, lastUpdated: r.last_updated}
+			}
+			return obj;
+		} else {
+			return null; // TODO: change this to return empty object like in getAllPropertyVerifications
+		}
+	}
+
+	// TODO: error handling
+	var res = await query(
+		'AffordableHousingDataHub',
+		`SELECT * from PropertyVerifications WHERE property_id = ${id}`
+	);
+	return reformat(res);
+}
+
+async function getAllPropertyVerifications() {
+	function reformat(result) {
+		var obj = {};
+		if (res.length > 0) {
+			for (var r of res) {
+				if (!_.has(obj, r.property_id)) {
+					obj[r.property_id] = {}
+				}
+				obj[r.property_id][r.field] = r.verified;
+			}
+			return obj;
+		} else {
+			return {};
+		}
+	}
+	var res = await query(
+		'AffordableHousingDataHub',
+		`SELECT * from PropertyVerifications`
+	);
+	return reformat(res);
+}
+
+async function getPropertyAssignedUser(id) {
+	var res = await query(
+		'AffordableHousingDataHub',
+		`SELECT assigned_user_id, Users.email from Properties INNER JOIN Users ON Properties.assigned_user_id = Users.id WHERE Properties.id = ${id}`
+	);
+	return res;
+}
+
+async function unassignUser(id) {
+	// TODO: need to error handle properly
+	if (id) {
+		var res = await query(
+			'AffordableHousingDataHub',
+			`UPDATE Properties SET assigned_user_id = NULL WHERE id = ${id}`
+		);
+		return true
+	}
+	return false;
+}
+
+async function assign_property_to_user(propertyId, userId) {
+	// TODO: need to error handle properly, mysql escape string
+	if (propertyId && userId) {
+		var res = await query(
+			'AffordableHousingDataHub',
+			`UPDATE Properties SET assigned_user_id = ${userId} WHERE id = ${propertyId}`
+		);
+		return res;
+	}
+	return null;
 }
 
 async function queryDatabase(mysqlConnection, database, query) {
@@ -230,4 +361,10 @@ module.exports.getProperty = getProperty;
 module.exports.updateSessionId = updateSessionId;
 module.exports.getUser = getUser;
 module.exports.query = query;
+module.exports.updateData = updateData;
+module.exports.getPropertyAssignedUser = getPropertyAssignedUser;
+module.exports.unassignUser = unassignUser;
+module.exports.assign_property_to_user = assign_property_to_user;
+module.exports.getPropertyVerifications = getPropertyVerifications;
+module.exports.getAllPropertyVerifications = getAllPropertyVerifications;
 

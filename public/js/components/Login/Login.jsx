@@ -4,8 +4,10 @@ import {Redirect} from 'react-router-dom';
 // axios
 import axios from 'axios';
 // dev files
-import './Login.css'
 import { debugLog } from "../../utilities.jsx";
+// css
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Login.css'
 
 class Login extends Component {
 	constructor(props) {
@@ -70,21 +72,31 @@ class Login extends Component {
 		}
 
 		return(
-			<div>
-				<span>Affordable Housing Data Hub</span>
-				<form>
-					<span>Email</span>
+			<div id='login-container'>
+					<div id='login-img-container'>
+						<img src='/img/house.png'/>
+					</div>
+					<div id='login-title-container'>
+						<span id='affordable-housing-data-hub-title'>Austin Affordable Housing Data Portal</span>
+					</div>
 					<br/>
-					<input id='email_login' className='login_input' autoComplete='on'></input>
-					<br/>
-					<span>Password</span>
-					<br/>
-					<input id='email_pass' className='login_input' type='password' autoComplete='on'></input>
-					<br/>
-					<button onClick={this.handleLogin}>Login</button>
-				</form>
-				<div id='login_failed_msg'>Login failed. Username and password combination is incorrect.</div>
-				<div id='login_error_msg'>Login failed. Please contact system adminstrator for details.</div>
+					<div className='login-form-container'>
+						<div>
+							<form className='form-group'>
+								<span>Email</span>
+								<br/>
+								<input id='email_login' className='login_input form-control' autoComplete='on'></input>
+								<br/>
+								<span>Password</span>
+								<br/>
+								<input id='email_pass' className='login_input form-control' type='password' autoComplete='on'></input>
+								<br/>
+								<button className='btn btn-primary btn-login' onClick={this.handleLogin}>Login</button>
+							</form>
+						</div>
+						<div id='login_failed_msg'>Login failed. Username and password combination is incorrect.</div>
+						<div id='login_error_msg'>Login failed. Please contact system adminstrator for details.</div>
+					</div>
 			</div>
 		)
 	}
