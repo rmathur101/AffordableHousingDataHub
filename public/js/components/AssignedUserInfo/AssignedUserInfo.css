@@ -1,0 +1,30 @@
+.assigned-info-container {
+	width: 300px;
+	height: 200px;
+	background-color: #CFCEE9;
+	border: 1px solid #CFCEE9;
+	border-radius: 6px;
+	margin-right: 100px;
+}
+
+.assigned-info-content {
+	margin-left: 20px;
+	margin-top: 10px
+}
+
+.assigned-info-title {
+	font-size: 24px;
+}
+
+.assign-info-btn {
+	width: 175;
+	margin-top: 10px;
+	background-color: #155671;
+	color: white;
+}
+
+.assign-info-btn:hover {
+	background-color: #8CB095;
+	color: white;
+	border-color: #8CB095;
+}

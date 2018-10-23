@@ -8,8 +8,12 @@ import {UpdatePropertyInput} from '../UpdatePropertyInput/UpdatePropertyInput.js
 import {TopNav} from '../TopNav/TopNav.jsx';
 import {PropertyDataGroupView} from '../PropertyDataGroupView/PropertyDataGroupView.jsx';
 import {PropertyDataGroupEdit} from '../PropertyDataGroupEdit/PropertyDataGroupEdit.jsx';
+import {ContactInfo} from '../ContactInfo/ContactInfo.jsx';
+import {AssignedUserInfo} from '../AssignedUserInfo/AssignedUserInfo.jsx';
 // css
 import './UpdateProperty.css';
+// libs
+import _ from "underscore";
 
 class UpdateProperty extends Component {
 	constructor(props) {
@@ -26,9 +30,17 @@ class UpdateProperty extends Component {
 				'Affordability Information',
 				'Amenities',
 				'Schools',
-				'Unit Information'
-			]
+				// 'Unit Information'
+				/* for v1 we are not going to collect real time unit information */
+			],
+			updatedData: {
+				// see 'Unit Information' above, we are not going to collect real time unit information for now
+				// newUnitInfo: {},
+				// updatedUnitInfo: {}
+			}
 		};
+
+		this.handleUpdateData = this.handleUpdateData.bind(this);
 
 		var propertyId = this.props.match.params.id;
 		var queryString = `/property?propertyId=${propertyId}&userEmail=${localStorage.getItem('email')}`;
@@ -36,7 +48,7 @@ class UpdateProperty extends Component {
 			.then((res) => {
 				console.log('what is res');
 				console.log(res);
-				this.setState({'data': res.data.data, 'fieldsMap': res.data.fieldsMap, 'showEditProperty': true});
+				this.setState({'data': res.data.data, 'fieldsMap': res.data.fieldsMap, 'showEditProperty': true, propertyId: propertyId, verifications: res.data.verifications});
 			})
 			.catch((e) => {
 				console.log('inside catch');
@@ -49,12 +61,24 @@ class UpdateProperty extends Component {
 			});
 	}
 
+	handleUpdateData(data) {
+		if (!_.has(this.state.updatedData, data.field)) {
+			this.state.updatedData[data.field] = {};
+		}
+
+		// TODO: for strings, need to check if there it is an empty string, if it is, value should be null
+		this.state.updatedData[data.field].value = data.value;
+
+		console.log('inside of handleUpdateData in UpdateProperty.jsx');
+		console.log(this.state.updatedData);
+	}
+
 	renderGroups(propertyDataGroupEdit=false) {
 
 		function getGroupFields(groupName, fieldsMap) {
 			var newObj = {};
 			for (var field in fieldsMap) {
-				if (fieldsMap[field].group && fieldsMap[field].group == groupName) {
+				if (fieldsMap[field].active && fieldsMap[field].group && fieldsMap[field].group == groupName) {
 					newObj[field] = fieldsMap[field];
 				}
 			}
@@ -85,7 +109,7 @@ class UpdateProperty extends Component {
 
 			if (propertyDataGroupEdit) {
 				groups.push(
-					<PropertyDataGroupEdit key={groupName} name={groupName} data={groupFieldsMap}/>
+					<PropertyDataGroupEdit key={groupName} name={groupName} data={groupFieldsMap} updatePropertyThis={this} handleUpdateData={this.handleUpdateData} verifications={this.state.verifications}/>
 				);
 			} else {
 				groups.push(
@@ -120,6 +144,22 @@ class UpdateProperty extends Component {
 		return this.state.data.id;
 	}
 
+	handleSave() {
+		var propertyId = this.props.match.params.id;
+		axios.post(
+			`/update_property?userEmail=${localStorage.getItem('email')}`,
+			{
+				updatedData: this.state.updatedData,
+				propertyId: propertyId
+			})
+			.then((res) => {
+
+			})
+			.catch((e) => {
+
+			});
+	}
+
 	render() {
 		if (this.state.redirectTo) {
 			return (<Redirect to={this.state.redirectTo} />);
@@ -142,18 +182,28 @@ class UpdateProperty extends Component {
 				<div>
 					<TopNav/>
 					<br/>
-					<div className='property-groups-container'>
-					{
-						this.getPropertyId() &&
-						<h2>Property ID: {this.getPropertyId()}</h2>
-					}
-					{
-						this.getPropertyAddress() &&
-						<h2>{this.getPropertyAddress()}</h2>
-					}
-						{/*<button onClick={() => {this.handleEditPropertyClick(false)}}>Back</button>*/}
+					<div className='update-property-left'>
+						<div className='property-groups-container'>
+						{
+							this.getPropertyId() &&
+							<h2>Property ID: {this.getPropertyId()}</h2>
+						}
+						{
+							this.getPropertyAddress() &&
+							<h2>{this.getPropertyAddress()}</h2>
+						}
+							{/*<button onClick={() => {this.handleEditPropertyClick(false)}}>Back</button>*/}
+							<br/>
+							{this.renderGroups(true)}
+						</div>
+						<div className='save-btn-container'>
+							<button onClick={this.handleSave.bind(this)} className='save-btn btn btn-success'>SAVE</button>
+						</div>
+					</div>
+					<div className='update-property-right'>
+						<ContactInfo data={this.state.data} />
 						<br/>
-						{this.renderGroups(true)}
+						<AssignedUserInfo propertyId={this.state.propertyId} />
 					</div>
 				</div>
 			);

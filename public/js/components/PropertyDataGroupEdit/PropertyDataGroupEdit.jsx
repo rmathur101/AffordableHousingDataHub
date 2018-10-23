@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 // css
 import './PropertyDataGroupEdit.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// components
+import {UnitInformation} from '../UnitInformation/UnitInformation.jsx';
+// libs
+import _ from 'underscore';
 
 class PropertyDataGroupEdit extends Component {
 	constructor(props) {
@@ -28,6 +32,59 @@ class PropertyDataGroupEdit extends Component {
 		var showGroup = this.state.showGroup;
 		this.setState({showGroup: !showGroup});
 		return;
+	}
+
+	onInputChange(field, e) {
+		console.log('new e');
+		console.log(e.target.value);
+		console.log('new field');
+		console.log(field);
+		var updateData = {
+			field: field,
+			value: e.target.value,
+			// verify: null
+		}
+		this.props.handleUpdateData(updateData);
+	}
+
+	onRadioChange(field, val, e) {
+		var updateData = {
+			field: field,
+			value: val
+		}
+		this.props.handleUpdateData(updateData);
+	}
+
+	handleClickVerify(field, e) {
+		var updatedData = this.props.updatePropertyThis.state.updatedData;
+		if (!_.has(updatedData, field)) {
+			this.props.updatePropertyThis.state.updatedData[field] = {};
+		}
+
+		var verifyVal = this.props.updatePropertyThis.state.updatedData[field].verify;
+
+		var verifications = this.props.verifications;
+		if (verifyVal == undefined) {
+			if (_.has(verifications, field)) {
+				verifyVal = verifications[field].verified;
+			}
+		}
+
+		if (verifyVal == true) {
+			// make not verified
+			this.props.updatePropertyThis.state.updatedData[field].verify = false;
+			e.target.innerText = 'VERIFY'
+			e.target.classList.remove('verified-btn');
+			e.target.classList.add('verify-btn');
+		} else {
+			// make verified
+			this.props.updatePropertyThis.state.updatedData[field].verify = true;
+			e.target.innerText = 'VERIFIED'
+			e.target.classList.remove('verify-btn');
+			e.target.classList.add('verified-btn');
+		}
+
+		console.log(this.props.updatePropertyThis.state.updatedData);
 	}
 
 	renderGroupEdit() {
@@ -58,12 +115,25 @@ class PropertyDataGroupEdit extends Component {
 			}
 		}
 
+		var isVerified = (field) => {
+			var verifications = this.props.verifications;
+			if (verifications) {
+				if (_.has(verifications, field) && verifications[field].verified == 1) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		var getInput = (field, dataType, value, isEditable) => {
 			if (isTypeText(dataType) || isTypeNum(dataType)) {
 				return (
 					<span className='form-group'>
-						<input type={isTypeText(dataType) ? 'text' : 'number'} readOnly={!isEditable} className='form-control text-or-num-input' id={field} defaultValue={(value || value == 0) ? value : ''} />
-						<button className='btn btn-success verify-btn'>verify</button>
+						<input type={isTypeText(dataType) ? 'text' : 'number'} readOnly={!isEditable} className='form-control text-or-num-input' id={field} defaultValue={(value || value == 0) ? value : ''} onChange={this.onInputChange.bind(this, field)} />
+					{ field != 'id' &&
+						/* exclude verify button from id */
+						<button onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+					}
 					</span>
 				);
 			} else if (isTypeBool(dataType)) {
@@ -71,16 +141,21 @@ class PropertyDataGroupEdit extends Component {
 					<span>
 						<div className='form-check form-check-inline'>
 							<label className='form-check-label' htmlFor={field + '_' + 'yes'}>
-								<input id={field + '_' + 'yes'} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={value == 1 ? true : false} />yes
+								<input id={field + '_' + 'yes'} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={value == 1 ? true : false} onClick={this.onRadioChange.bind(this, field, true)} />yes
 							</label>
 						</div>
 						<div className='form-check form-check-inline'>
 							<label className='form-check-label' htmlFor={field + '_' + 'no'}>
-								<input id={field + '_' + 'no'} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={value == 0 ? true : false} />no
+								<input id={field + '_' + 'no'} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={value == 0 ? true : false} onClick={this.onRadioChange.bind(this, field, false)}/>no
 							</label>
 						</div>
 						<div className='form-check form-check-inline'>
-							<button className='btn btn-success verify-btn'>verify</button>
+							<label className='form-check-label' htmlFor={field + '_' + 'null'}>
+								<input id={field + '_' + 'null'} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={(value != 0 && value != 1) ? true : false} onClick={this.onRadioChange.bind(this, field, null)}/>unknown
+							</label>
+						</div>
+						<div className='form-check form-check-inline'>
+							<button onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
 						</div>
 					</span>
 				);
@@ -103,19 +178,41 @@ class PropertyDataGroupEdit extends Component {
 						values.push(enumValue)
 					}
 				}
+
+				values.push('unknown');
+
 				var elements = [];
 				for (var v of values) {
-					var elem = (
-						<span key={field + '_' + v}>
-							<div className='form-check form-check-inline'>
-								<label className='form-check-label' htmlFor={field + '_' + v}>
-									<input id={field + '_' + v} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={v == value ? true : false} />{v}
-								</label>
-							</div>
-						</span>
-					);
+					if (v == 'unknown') {
+						var elem = (
+							<span key={field + '_' + v}>
+								<div className='form-check form-check-inline'>
+									<label className='form-check-label' htmlFor={field + '_' + v}>
+										<input id={field + '_' + v} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={value == null ? true : false} onClick={this.onRadioChange.bind(this, field, null)} />{v}
+									</label>
+								</div>
+							</span>
+						);
+					} else {
+						var elem = (
+							<span key={field + '_' + v}>
+								<div className='form-check form-check-inline'>
+									<label className='form-check-label' htmlFor={field + '_' + v}>
+										<input id={field + '_' + v} className='form-check-input' readOnly={!isEditable} name={field} type='radio' defaultChecked={(v == value) ? true : false} onClick={this.onRadioChange.bind(this, field, v)} />{v}
+									</label>
+								</div>
+							</span>
+						);
+					}
 					elements.push(elem);
 				}
+				elements.push(
+					<span key={field + '_verify_btn'}>
+						<div className='form-check form-check-inline'>
+							<button onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+						</div>
+					</span>
+				);
 				return elements;
 
 			} else {
@@ -129,19 +226,15 @@ class PropertyDataGroupEdit extends Component {
 			console.log('');
 			group.push(
 				<div className='property-group-input-container' key={d}>
-					<span><b>{d}: </b><img onClick={ this.handleInfoClick.bind(this, d) } className='info-img' src='/img/info.png'/></span>
+					<span><b>{data[d].name}: </b><img onClick={ this.handleInfoClick.bind(this, d) } className='info-img' src='/img/info.png'/></span>
 					<br/>
-					{getInput(d, data[d].dataType, data[d].value, data[d].editable)}
+					<div className='property-group-input'>
+						{getInput(d, data[d].dataType, data[d].value, data[d].editable)}
+					</div>
 				</div>
 			);
 		}
 		return group;
-	}
-
-	renderUnitInformationEdit() {
-		return (
-			<button>Add Another Unit Type</button>
-		);
 	}
 
 	render() {
@@ -152,13 +245,13 @@ class PropertyDataGroupEdit extends Component {
 					<u>{this.state.groupName}</u>
 				</span>
 			{ this.state.showGroup && this.state.groupName != 'Unit Information' &&
-				<div>
+				<div className='property-group-inputs'>
 					{this.renderGroupEdit()}
 				</div>
 			}
 			{ this.state.showGroup && this.state.groupName == 'Unit Information' &&
 				<div>
-					{this.renderUnitInformationEdit()}
+					<UnitInformation updatePropertyThis={this.props.updatePropertyThis} />
 				</div>
 			}
 			</div>

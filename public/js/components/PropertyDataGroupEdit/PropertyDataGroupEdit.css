@@ -23,10 +23,48 @@
 .verify-btn {
 	margin-left: 10px;
 	text-transform: uppercase;
-	font-size: 10px;
-	background-color: #00b33c;
+	font-size: 12px;
+	background-color: #155671;
+	border: 1px solid #155671;
+	height: 35;
+	width: 100;
+}
+
+.verify-btn:hover {
+	background-color: white;
+	border: 1px solid #006666;
+	color: black;
+}
+
+.verified-btn {
+	margin-left: 10px;
+	text-transform: uppercase;
+	font-size: 12px;
+	background-color: #8CB095;
+	border: 1px solid #8CB095;
+	height: 35;
+	width: 100;
+}
+
+.verified-btn:hover {
+	background-color: white;
+	border: 1px solid #006666;
+	color: black;
 }
 
 .property-group-input-container {
-	margin-bottom: 10px;
+	margin-bottom: 30px;
+}
+
+.property-group-input {
+	margin-top: 15px;
+}
+
+.property-group-inputs {
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+.save-btn {
+	width: 200px;
 }

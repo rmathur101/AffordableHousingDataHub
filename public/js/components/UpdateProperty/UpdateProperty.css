@@ -24,4 +24,27 @@
 	margin-left: 100px;
 }
 
+.save-btn {
+	width: 200px;
+	background-color: #155671;
+	color: white;
+	border-color: #155671;
+}
 
+.save-btn:hover {
+	background-color: #8CB095;
+	color: white;
+	border-color: #8CB095;
+}
+
+.save-btn-container {
+	margin-left: 90px;
+}
+
+.update-property-left {
+	float: left;
+}
+
+.update-property-right {
+	float: right;
+}
