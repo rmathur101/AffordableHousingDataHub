@@ -16,6 +16,69 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(sessionHelper.initSession());
 
+function addVerificationFlags(properties, verifications) {
+    function isPropertyInfoVerified(property, verifs) {
+        if (!_.has(verifs, property.id)) {
+            return false;
+        }
+
+        var propVerifs = verifications[property.id];
+        for (var field in propertyFieldsMap) {
+            var fieldVal = propertyFieldsMap[field];
+            if (!fieldVal.editable || !fieldVal.active || fieldVal.group == 'Affordability Information') {
+                continue;
+            }
+
+            if (!_.has(propVerifs, field)) {
+                return false;
+            }
+            if (propVerifs[field] == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function isAffordabilityInfoVerified(property, verifs) {
+        if (!_.has(verifs, property.id)) {
+            return false;
+        }
+
+        var propVerifs = verifications[property.id];
+        for (var field in propertyFieldsMap) {
+            var fieldVal = propertyFieldsMap[field];
+            if (!fieldVal.editable || !fieldVal.active || fieldVal.group != 'Affordability Information') {
+                continue;
+            }
+
+            if (!_.has(propVerifs, field)) {
+                return false;
+            }
+            if (propVerifs[field] == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    for (var p in properties) {
+        var property = properties[p];
+        if (isPropertyInfoVerified(property, verifications)) {
+            properties[p].propertyInfoVerified = true;
+        } else {
+            properties[p].propertyInfoVerified = false;
+        }
+        if (isAffordabilityInfoVerified(property, verifications)) {
+            properties[p].affordabilityInfoVerified = true;
+        } else {
+            properties[p].affordabilityInfoVerified = false;
+        }
+    }
+    return properties;
+}
+
 app.get('/update_properties_list', async (req, res) => {
     try {
         if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
@@ -23,8 +86,70 @@ app.get('/update_properties_list', async (req, res) => {
         }
 
         var result = await dbHelper.getUpdatePropertiesList();
+        var verifications = await dbHelper.getAllPropertyVerifications();
+        result = addVerificationFlags(result, verifications);
         return res.status(200).send({success: true, data: result});
     } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
+});
+
+app.get('/get_assigned_user', async(req, res) => {
+    // console.log(propertyFieldsMap);
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'})
+        }
+        var propertyId = req.query.propertyId;
+        var assignedUser = await dbHelper.getPropertyAssignedUser(propertyId);
+        return res.status(200).send({success: true, data: assignedUser});
+    } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
+});
+
+app.get('/unassign_user', async(req, res) => {
+    // console.log(propertyFieldsMap);
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'})
+        }
+        var propertyId = req.query.propertyId;
+        await dbHelper.unassignUser(propertyId);
+        return res.status(200).send({success: true});
+    } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
+});
+
+app.get('/assign_property_to_user', async(req, res) => {
+    // console.log(propertyFieldsMap);
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'})
+        }
+        var propertyId = req.query.propertyId;
+        var result = await dbHelper.getUser(req.query.userEmail);
+        await dbHelper.assign_property_to_user(propertyId, result[0].id);
+        return res.status(200).send({success: true, assignedTo: req.query.userEmail});
+    } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
+});
+
+app.post('/update_property', async(req, res) => {
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'});
+        }
+        // TODO: throw error if there is no property id
+        dbHelper.updateData(req.body.updatedData, req.body.propertyId);
+        return res.status(200).send({success: true});
+    } catch(e) {
         logger.log('error', e, {origin: 'server'});
         return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
     }
@@ -38,7 +163,10 @@ app.get('/property', async(req, res) => {
         }
         var propertyId = req.query.propertyId;
         var result = await dbHelper.getProperty(propertyId);
-        return res.status(200).send({success: true, data: result[0], fieldsMap: propertyFieldsMap});
+        var verifications
+        var assignedUser = await dbHelper.getPropertyAssignedUser(propertyId);
+        var verifications = await dbHelper.getPropertyVerifications(propertyId);
+        return res.status(200).send({success: true, data: result[0], fieldsMap: propertyFieldsMap, assignedUser: assignedUser, verifications: verifications});
     } catch (e) {
         logger.log('error', e, {origin: 'server'});
         return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
