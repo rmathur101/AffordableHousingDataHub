@@ -2,3 +2,4 @@
 /public/dist/*
 /logs/*
 /config/
+config_path.txt
