@@ -1,5 +1,4 @@
-const configPath = '/Users/rmathur101/Desktop/WORKING_ON/PROJECTS/AFFORDABLE_HOUSING/affordable_housing_data_hub/app/config/'
-const projectRootPath = '/Users/rmathur101/Desktop/WORKING_ON/PROJECTS/AFFORDABLE_HOUSING/affordable_housing_data_hub/app/';
+const fs = require('fs');
+const configPath = fs.readFileSync('./config_path.txt', 'utf8');
 
 module.exports.configPath = configPath;
-module.exports.projectRootPath = projectRootPath;
