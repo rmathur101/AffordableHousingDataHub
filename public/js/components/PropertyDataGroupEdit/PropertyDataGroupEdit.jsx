@@ -45,6 +45,19 @@ class PropertyDataGroupEdit extends Component {
 			// verify: null
 		}
 		this.props.handleUpdateData(updateData);
+		this.state.data[field].value = e.target.value;
+
+		this.setVerifyFalse(field);
+	}
+
+	setVerifyFalse(field) {
+		var id = field + '-verify-btn';
+		var elem = document.getElementById(id);
+		elem.innerText = 'VERIFY'
+		elem.classList.remove('verified-btn');
+		elem.classList.add('verify-btn');
+		this.props.updatePropertyThis.state.updatedData[field].verify = false;
+		this.props.updateVerifications(field, 0);
 	}
 
 	onRadioChange(field, val, e) {
@@ -53,22 +66,32 @@ class PropertyDataGroupEdit extends Component {
 			value: val
 		}
 		this.props.handleUpdateData(updateData);
+		this.state.data[field].value = val;
+
+		this.setVerifyFalse(field);
 	}
 
-	handleClickVerify(field, e) {
+	handleClickVerify(field, e, forceValue=null) {
 		var updatedData = this.props.updatePropertyThis.state.updatedData;
 		if (!_.has(updatedData, field)) {
 			this.props.updatePropertyThis.state.updatedData[field] = {};
 		}
 
-		var verifyVal = this.props.updatePropertyThis.state.updatedData[field].verify;
+		var verifyVal;
+		if (!_.isNull(forceValue)) {
+			// set to the opposite here so that it is set to the correct value below
+			verifyVal = !forceValue;
+		} else {
+			verifyVal = this.props.updatePropertyThis.state.updatedData[field].verify;
 
-		var verifications = this.props.verifications;
-		if (verifyVal == undefined) {
-			if (_.has(verifications, field)) {
-				verifyVal = verifications[field].verified;
+			if (_.isUndefined(verifyVal)) {
+				var verifications = this.props.verifications;
+				if (_.has(verifications, field)) {
+					verifyVal = verifications[field].verified;
+				}
 			}
 		}
+
 
 		if (verifyVal == true) {
 			// make not verified
@@ -76,12 +99,17 @@ class PropertyDataGroupEdit extends Component {
 			e.target.innerText = 'VERIFY'
 			e.target.classList.remove('verified-btn');
 			e.target.classList.add('verify-btn');
+
+			this.props.updateVerifications(field, 0);
 		} else {
 			// make verified
 			this.props.updatePropertyThis.state.updatedData[field].verify = true;
 			e.target.innerText = 'VERIFIED'
 			e.target.classList.remove('verify-btn');
 			e.target.classList.add('verified-btn');
+
+			// you need to find a way to update the verifications object so when you close / open, the value still exists
+			this.props.updateVerifications(field, 1);
 		}
 
 		console.log(this.props.updatePropertyThis.state.updatedData);
@@ -132,7 +160,7 @@ class PropertyDataGroupEdit extends Component {
 						<input type={isTypeText(dataType) ? 'text' : 'number'} readOnly={!isEditable} className='form-control text-or-num-input' id={field} defaultValue={(value || value == 0) ? value : ''} onChange={this.onInputChange.bind(this, field)} />
 					{ field != 'id' &&
 						/* exclude verify button from id */
-						<button onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+						<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
 					}
 					</span>
 				);
@@ -155,7 +183,7 @@ class PropertyDataGroupEdit extends Component {
 							</label>
 						</div>
 						<div className='form-check form-check-inline'>
-							<button onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+							<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
 						</div>
 					</span>
 				);
@@ -209,7 +237,7 @@ class PropertyDataGroupEdit extends Component {
 				elements.push(
 					<span key={field + '_verify_btn'}>
 						<div className='form-check form-check-inline'>
-							<button onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+							<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
 						</div>
 					</span>
 				);

@@ -515,6 +515,15 @@ module.exports.fieldsMap = {
         active: true,
         name: 'Units <= 80% MFI'
     },
+    has_available_affordable_units: {
+        dataType: 'tinyint(1)',
+        group: 'Affordability Information',
+        groupOrderNum: 23,
+        editable: true,
+        description: 'Does this property have any affordable units available today? This includes either income restricted units, section 8 properties, or public housing.',
+        active: true,
+        name: 'Does this property have any affordable units (i.e. income restricted, section 8, etc.) available today?'
+    },
     // num_units_mfi_90: {
     //     dataType: 'int(11)'
     // },

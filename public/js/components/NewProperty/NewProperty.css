@@ -1,0 +1,12 @@
+#new-property-save-btn {
+	text-transform: uppercase;
+	background-color: #155671;
+	border: 1px solid #155671;
+	width: 200px;
+}
+
+#new-property-save-btn:hover {
+	background-color: white;
+	border: 1px solid #006666;
+	color: black;
+}

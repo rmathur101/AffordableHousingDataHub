@@ -41,6 +41,7 @@ class UpdateProperty extends Component {
 		};
 
 		this.handleUpdateData = this.handleUpdateData.bind(this);
+		this.updateVerifications = this.updateVerifications.bind(this);
 
 		var propertyId = this.props.match.params.id;
 		var queryString = `/property?propertyId=${propertyId}&userEmail=${localStorage.getItem('email')}`;
@@ -67,10 +68,22 @@ class UpdateProperty extends Component {
 		}
 
 		// TODO: for strings, need to check if there it is an empty string, if it is, value should be null
-		this.state.updatedData[data.field].value = data.value;
+
+		if (typeof(data.value) == "string" && data.value.trim().length == 0) {
+			this.state.updatedData[data.field].value = null;
+		} else {
+			this.state.updatedData[data.field].value = data.value;
+		}
 
 		console.log('inside of handleUpdateData in UpdateProperty.jsx');
 		console.log(this.state.updatedData);
+	}
+
+	updateVerifications(field, verifyVal) {
+		if (!_.has(this.verifications, field)) {
+			this.state.verifications[field] = {}
+		}
+		this.state.verifications[field].verified = verifyVal;
 	}
 
 	renderGroups(propertyDataGroupEdit=false) {
@@ -109,7 +122,7 @@ class UpdateProperty extends Component {
 
 			if (propertyDataGroupEdit) {
 				groups.push(
-					<PropertyDataGroupEdit key={groupName} name={groupName} data={groupFieldsMap} updatePropertyThis={this} handleUpdateData={this.handleUpdateData} verifications={this.state.verifications}/>
+					<PropertyDataGroupEdit key={groupName} name={groupName} data={groupFieldsMap} updatePropertyThis={this} handleUpdateData={this.handleUpdateData} updateVerifications={this.updateVerifications} verifications={this.state.verifications}/>
 				);
 			} else {
 				groups.push(
@@ -144,7 +157,40 @@ class UpdateProperty extends Component {
 		return this.state.data.id;
 	}
 
+	hideSaveButton() {
+		var elem = document.getElementById('update-property-save-btn');
+		elem.style.display = 'none';
+		return;
+	}
+
+	showSaveButton() {
+		var elem = document.getElementById('update-property-save-btn');
+		elem.style.display = 'block';
+		return;
+	}
+
+	showSaveMessage() {
+		document.getElementById('save-message-success').style.display = 'block';
+		return;
+	}
+
+	hideSaveMessage() {
+		document.getElementById('save-message-success').style.display = 'none';
+		return;
+	}
+
+	showFailureMessage() {
+		document.getElementById('save-message-failure').style.display = 'block';
+	}
+
+	hideFailureMessage() {
+		document.getElementById('save-message-failure').style.display = 'none';
+	}
+
 	handleSave() {
+		this.hideSaveButton();
+		this.hideSaveMessage();
+		this.hideFailureMessage();
 		var propertyId = this.props.match.params.id;
 		axios.post(
 			`/update_property?userEmail=${localStorage.getItem('email')}`,
@@ -153,10 +199,12 @@ class UpdateProperty extends Component {
 				propertyId: propertyId
 			})
 			.then((res) => {
-
+				this.showSaveButton();
+				this.showSaveMessage();
 			})
 			.catch((e) => {
-
+				this.showSaveButton();
+				this.showFailureMessage();
 			});
 	}
 
@@ -197,7 +245,9 @@ class UpdateProperty extends Component {
 							{this.renderGroups(true)}
 						</div>
 						<div className='save-btn-container'>
-							<button onClick={this.handleSave.bind(this)} className='save-btn btn btn-success'>SAVE</button>
+							<button id='update-property-save-btn' onClick={this.handleSave.bind(this)} className='save-btn btn btn-success'>SAVE</button>
+							<span id='save-message-success' className='text-success'>Success! Your data was saved!</span>
+							<span id='save-message-failure' className='text-danger'>There was an issue saving your data. Please try again or contact system adminstrator.</span>
 						</div>
 					</div>
 					<div className='update-property-right'>

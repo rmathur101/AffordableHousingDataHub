@@ -16,16 +16,47 @@
 #update-properties-table {
 	margin-left: 50px;
 	width: 1100px;
+	min-width: 1100px;
+	/*table-layout: fixed;*/
+}
+
+#update-properties-table > tr {
+	width: 1100px;
+	min-width: 1100px;
 }
 
 #table-search-input {
+	margin-left: 20px;
+	width: 835;
+	display: inline;
+}
+
+#new-property-id {
+	margin-bottom: 4px;
 	margin-left: 50px;
-	width: 1100px;
+	display: inline;
+	text-transform: uppercase;
+	background-color: #155671;
+	border: 1px solid #155671;
+	font-size: 12px;
+}
+
+#new-property-id:hover {
+	background-color: white;
+	border: 1px solid #006666;
+	color: black;
+}
+
+#table-search-select {
+	margin-left: 20px;
+	margin-bottom: 4px;
+	display: inline;
+	width: 165;
 }
 
 .table-flag {
 	font-size: 10;
-	width: 145px;
+	width: 120px;
 	padding: 0px;
 	padding-top: 3px;
 	padding-bottom: 3px;
@@ -42,12 +73,12 @@
 }
 
 .table-flag-unverified {
-	background-color: #b22222;
-	border-color: #b22222;
+	background-color: #de5454;
+	border-color: #de5454;
 }
 .table-flag-unverified:hover {
-	background-color: #b22222;
-	border-color: #b22222;
+	background-color: #de5454;
+	border-color: #de5454;
 	cursor: default !important;
 }
 

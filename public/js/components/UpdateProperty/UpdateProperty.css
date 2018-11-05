@@ -43,8 +43,26 @@
 
 .update-property-left {
 	float: left;
+	margin-bottom: 150px;
 }
 
 .update-property-right {
 	float: right;
 }
+
+#save-message-success {
+	display: block;
+	margin-left: 10px;
+	margin-top: 10px;
+	display: none;
+	color: #8CB095;
+}
+
+#save-message-failure {
+	display: block;
+	margin-left: 10px;
+	margin-top: 10px;
+	display: none;
+}
+
+

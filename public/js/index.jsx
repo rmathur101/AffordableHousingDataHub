@@ -13,6 +13,7 @@ import {Login} from './components/Login/Login.jsx';
 import {UpdateProperties} from './components/UpdateProperties/UpdateProperties.jsx';
 import {UpdateProperty} from './components/UpdateProperty/UpdateProperty.jsx';
 import {PrivateRoute} from './components/PrivateRoute/PrivateRoute.jsx';
+import {NewProperty} from './components/NewProperty/NewProperty.jsx';
 
 debugLog(
     {
@@ -31,6 +32,7 @@ ReactDOM.render((
             <Route exact path="/" component={Login} />
             <PrivateRoute exact path="/update_property/:id" component={UpdateProperty} />
             <PrivateRoute exact path='/update_properties' component={UpdateProperties} />
+            <PrivateRoute exact path='/new_property' component={NewProperty} />
         </Switch>
     </BrowserRouter>
 ), document.getElementById('container'));

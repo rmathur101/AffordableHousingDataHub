@@ -50,17 +50,13 @@ async function updateData(updateDataObj, propertyId) {
 			}
 
 			// value could be null for example if they put unknown
-			if (!(value == undefined)) {
+			if (!_.isUndefined(value)) {
 				// check that field is in fieldsMap, and that it is active
 				// run sql command to update that one field
 				await query(
 					'AffordableHousingDataHub',
 					`UPDATE Properties SET ${field} = ${mysql.escape(value)} WHERE id =${mysql.escape(propertyId)}`
 				);
-			}
-
-			if (!(verify == null || verify == undefined)) {
-
 			}
 		}
 	}
@@ -174,7 +170,7 @@ async function getUpdatePropertiesList() {
 
 	var res = query(
 		'AffordableHousingDataHub',
-		'SELECT Properties.id, property_name, address, phone, Properties.email as email, website, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id'
+		'SELECT property_name, data_source_ahi, data_source_tdhca, data_source_atc_guide, Properties.id, property_name, address, phone, Properties.email as email, website, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id'
 	);
 
 	return res;
