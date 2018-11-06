@@ -226,7 +226,15 @@ app.post('/log_event', (req, res) => {
     res.sendStatus(200);
 });
 
-app.listen(3000, () => {
+function getPort() {
+    if (process.env.NODE_ENV == 'PRODUCTION') {
+        return 80;
+    } else {
+        return 3000;
+    }
+}
+
+app.listen(getPort(), () => {
     function logBuildType() {
         if (process.env.NODE_ENV == "PRODUCTION") {
             logger.info(
