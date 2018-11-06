@@ -7,7 +7,7 @@ const thisFilename = 'sessions.js';
 
 // NOTE: might have set proxy for sessions to work as well as to get correctly get the remote address
 module.exports.initSession = function() {
-    var sessionSecretPath = initConfig.configPath + 'session_secret.txt';
+    var sessionSecretPath = initConfig.configPath.trim() + 'session_secret.txt';
     console.log(sessionSecretPath);
     var sessionOpts = {
         secret: fs.readFileSync(sessionSecretPath, 'utf8'),
