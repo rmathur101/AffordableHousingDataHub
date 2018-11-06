@@ -7,12 +7,6 @@ const thisFilename = 'database.js';
 const _ = require('underscore');
 const moment = require('moment');
 
-//TODO: after talking with britney, it seems that i don't need a try catch in these secondary functions,
-// i need on try catch in my top level function (that would be in my route), and all thrown erros in these,
-// secondary functions, should bubble up there? i guess that is if there is a thrown error, instead of a return
-// then that error will be thrown to the try catch, what i need to do though, is make sure that i am throwing errors
-// when values are not what are expected
-
 async function updateData(updateDataObj, propertyId) {
 	// TODO: if there is no propertyId, throw error
 
