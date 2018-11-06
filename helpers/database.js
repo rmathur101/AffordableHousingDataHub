@@ -323,7 +323,11 @@ async function getDatabaseConnection() {
 					password: fs.readFileSync(initConfig.configPath.trim() + 'db_pass.txt', 'utf8'),
 				});
 			} else if (process.env.NODE_ENV == 'PRODUCTION') {
-				var conn;
+				 var conn = mysql.createConnection({
+					socketPath: fs.readFileSync(initConfig.configPath.trim() + 'db_socket_path.txt', 'utf8'),
+					user: fs.readFileSync(initConfig.configPath.trim() + 'db_user.txt', 'utf8'),
+					password: fs.readFileSync(initConfig.configPath.trim() + 'db_pass.txt', 'utf8'),
+				});
 				// TODO: facillitate connection to internet socket (probs hosted on aws)
 			}
 
