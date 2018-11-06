@@ -1,2 +1,2 @@
 NODE_ENV='PRODUCTION'
-node app.js
+pm2 start app.js
