@@ -7,7 +7,7 @@ const thisFilename = 'database.js';
 const _ = require('underscore');
 const moment = require('moment');
 
-async function updateData(updateDataObj, propertyId) {
+async function updateData(updateDataObj, propertyId, user_id) {
 	// TODO: if there is no propertyId, throw error
 
 	// iterate through updateDataObj
@@ -32,12 +32,12 @@ async function updateData(updateDataObj, propertyId) {
 					var verifyId = verifyExists[0].id;
 					await query(
 						'AffordableHousingDataHub',
-						`UPDATE PropertyVerifications SET verified = ${verify}, last_updated = '${moment().format('YYYY-MM-DD HH:mm:ss')}' WHERE id = ${verifyId}`
+						`UPDATE PropertyVerifications SET verified = ${verify}, last_updated = '${moment().format('YYYY-MM-DD HH:mm:ss')}', updated_by_user_id=${user_id} WHERE id = ${verifyId}`
 					);
 				} else {
 					await query(
 						'AffordableHousingDataHub',
-						`INSERT INTO PropertyVerifications (verified, property_id, field, last_updated) VALUES (${mysql.escape(verify)}, ${mysql.escape(propertyId)}, ${mysql.escape(field)}, '${moment().format('YYYY-MM-DD HH:mm:ss')}')`
+						`INSERT INTO PropertyVerifications (verified, property_id, field, last_updated, updated_by_user_id) VALUES (${mysql.escape(verify)}, ${mysql.escape(propertyId)}, ${mysql.escape(field)}, '${moment().format('YYYY-MM-DD HH:mm:ss')}', ${user_id})`
 					);
 				}
 
@@ -215,7 +215,7 @@ async function getPropertyVerifications(id) {
 		var obj = {};
 		if (res.length > 0) {
 			for (var r of res) {
-				obj[r.field] = {verified: r.verified, lastUpdated: r.last_updated}
+				obj[r.field] = {verified: r.verified, lastUpdated: r.last_updated, updateUserEmail: r.email}
 			}
 			return obj;
 		} else {
@@ -226,7 +226,7 @@ async function getPropertyVerifications(id) {
 	// TODO: error handling
 	var res = await query(
 		'AffordableHousingDataHub',
-		`SELECT * from PropertyVerifications WHERE property_id = ${id}`
+		`SELECT  * from PropertyVerifications LEFT JOIN Users ON updated_by_user_id = Users.id WHERE property_id = ${id} `
 	);
 	return reformat(res);
 }

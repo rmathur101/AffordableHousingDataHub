@@ -147,7 +147,9 @@ app.post('/update_property', async(req, res) => {
             return res.status(401).send({success: false, redirect: '/'});
         }
         // TODO: throw error if there is no property id
-        dbHelper.updateData(req.body.updatedData, req.body.propertyId);
+        var result = await dbHelper.getUser(req.query.userEmail);
+        var user = result[0];
+        dbHelper.updateData(req.body.updatedData, req.body.propertyId, user.id);
         return res.status(200).send({success: true});
     } catch(e) {
         logger.log('error', e, {origin: 'server'});
@@ -163,7 +165,6 @@ app.get('/property', async(req, res) => {
         }
         var propertyId = req.query.propertyId;
         var result = await dbHelper.getProperty(propertyId);
-        var verifications
         var assignedUser = await dbHelper.getPropertyAssignedUser(propertyId);
         var verifications = await dbHelper.getPropertyVerifications(propertyId);
         return res.status(200).send({success: true, data: result[0], fieldsMap: propertyFieldsMap, assignedUser: assignedUser, verifications: verifications});
