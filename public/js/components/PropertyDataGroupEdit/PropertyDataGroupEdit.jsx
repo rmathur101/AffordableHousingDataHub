@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {UnitInformation} from '../UnitInformation/UnitInformation.jsx';
 // libs
 import _ from 'underscore';
+import moment from 'moment';
 
 class PropertyDataGroupEdit extends Component {
 	constructor(props) {
@@ -153,6 +154,22 @@ class PropertyDataGroupEdit extends Component {
 			return false;
 		}
 
+		var getVerifiedInfo = (field) => {
+
+			var elem1 = <span></span>;
+			var elem2 = <span></span>;
+			var verifications = this.props.verifications;
+			if (verifications && _.has(verifications, field)) {
+				if (verifications[field].lastUpdated) {
+					elem1 = <span>{'updated/verified on '}<b>{moment((verifications[field].lastUpdated)).format('YYYY-MM-DD h:mma')}</b></span>
+				}
+				if (verifications[field].updateUserEmail) {
+					elem2 = <span>{'by '}<b>{verifications[field].updateUserEmail}</b></span>
+				}
+			}
+			return <span>{elem1} {elem2}</span>
+		}
+
 		var getInput = (field, dataType, value, isEditable) => {
 			if (isTypeText(dataType) || isTypeNum(dataType)) {
 				return (
@@ -160,7 +177,10 @@ class PropertyDataGroupEdit extends Component {
 						<input type={isTypeText(dataType) ? 'text' : 'number'} readOnly={!isEditable} className='form-control text-or-num-input' id={field} defaultValue={(value || value == 0) ? value : ''} onChange={this.onInputChange.bind(this, field)} />
 					{ field != 'id' &&
 						/* exclude verify button from id */
-						<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+						<span>
+							<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+							<span style={{'marginLeft': '20px'}}>{getVerifiedInfo(field)}</span>
+						</span>
 					}
 					</span>
 				);
@@ -184,6 +204,7 @@ class PropertyDataGroupEdit extends Component {
 						</div>
 						<div className='form-check form-check-inline'>
 							<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+							<span style={{'marginLeft': '20px'}}>{getVerifiedInfo(field)}</span>
 						</div>
 					</span>
 				);
@@ -238,6 +259,7 @@ class PropertyDataGroupEdit extends Component {
 					<span key={field + '_verify_btn'}>
 						<div className='form-check form-check-inline'>
 							<button id={field + '-verify-btn'} onClick={this.handleClickVerify.bind(this, field)} className={'btn btn-primary ' + (isVerified(field) ? 'verified-btn' : 'verify-btn')}>{isVerified(field) ? 'verified' : 'verify'}</button>
+							<span style={{'marginLeft': '20px'}}>{getVerifiedInfo(field)}</span>
 						</div>
 					</span>
 				);

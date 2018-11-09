@@ -156,7 +156,7 @@ class UpdatePropertiesTable extends Component {
 					>New Property</button>
 					<input onKeyUp={this.handleSearchKeyUp.bind(this)} className='form-control' type="text" id="table-search-input" placeholder="Search by address..." />
 					<select id='table-search-select' onChange={this.handleSearchSelectChange.bind(this)} className="custom-select">
-						<option defaultSelected>Address</option>
+						<option selected={true}>Address</option>
 						<option>Property ID</option>
 						<option>Property Name</option>
 						<option>Assigned To</option>
