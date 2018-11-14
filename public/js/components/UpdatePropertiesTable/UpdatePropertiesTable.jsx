@@ -42,15 +42,17 @@ class UpdatePropertiesTable extends Component {
 
 	renderFlags(p) {
 		var elem1, elem2;
-		if (p.propertyInfoVerified) {
-			elem1 = <button className='table-flag btn btn-success table-flag-verified'>Info Verified</button>;
+		// if (p.propertyInfoVerified) {
+		if (p.basicPropertyInfoVerified) {
+			elem1 = <button className='table-flag btn btn-success table-flag-verified'>Basic Info Verified</button>;
 		} else {
-			elem1 = <button className='table-flag btn btn-danger table-flag-unverified'>Info Unverified</button>;
+			elem1 = <button className='table-flag btn btn-danger table-flag-unverified'>Basic Info Unverified</button>;
 		}
-		if (p.affordabilityInfoVerified) {
-			elem2 = <button className='table-flag btn btn-success table-flag-verified affordability-info-flag'>Affordability Verified</button>;
+		// if (p.affordabilityInfoVerified) {
+		if (p.tenantCriteriaVerified) {
+			elem2 = <button className='table-flag btn btn-success table-flag-verified affordability-info-flag'>Tenant Criteria Verified</button>;
 		} else {
-			elem2 = <button className='table-flag btn btn-danger table-flag-unverified affordability-info-flag'>Affordability Unverified</button>;
+			elem2 = <button className='table-flag btn btn-danger table-flag-unverified affordability-info-flag'>Tenant Criteria Verified</button>;
 		}
 		return <span>{elem1} {elem2}</span>;
 	}

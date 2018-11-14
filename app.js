@@ -63,6 +63,53 @@ function addVerificationFlags(properties, verifications) {
         return true;
     }
 
+    function isBasicPropertyInfoVerified(property, verifs) {
+        if (!_.has(verifs, property.id)) {
+            return false;
+        }
+
+        var propVerifs = verifications[property.id];
+        for (var field in propertyFieldsMap) {
+            var fieldVal = propertyFieldsMap[field];
+            if (!fieldVal.editable || !fieldVal.active || !fieldVal.tags || !_.contains(fieldVal.tags, 'Basic Property Info')) {
+                continue;
+            }
+
+            if (!_.has(propVerifs, field)) {
+                return false;
+            }
+            if (propVerifs[field] == 0) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    function isTenantCriteriaVerified(property, verifs) {
+        if (!_.has(verifs, property.id)) {
+            return false;
+        }
+
+        var propVerifs = verifications[property.id];
+        for (var field in propertyFieldsMap) {
+            var fieldVal = propertyFieldsMap[field];
+            if (!fieldVal.editable || !fieldVal.active || !fieldVal.tags || !_.contains(fieldVal.tags, 'Tenant Criteria Info')) {
+                continue;
+            }
+
+            if (!_.has(propVerifs, field)) {
+                return false;
+            }
+            if (propVerifs[field] == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     for (var p in properties) {
         var property = properties[p];
         if (isPropertyInfoVerified(property, verifications)) {
@@ -74,6 +121,16 @@ function addVerificationFlags(properties, verifications) {
             properties[p].affordabilityInfoVerified = true;
         } else {
             properties[p].affordabilityInfoVerified = false;
+        }
+        if (isBasicPropertyInfoVerified(property, verifications)) {
+            properties[p].basicPropertyInfoVerified = true;
+        } else {
+            properties[p].basicPropertyInfoVerified = false;
+        }
+        if (isTenantCriteriaVerified(property, verifications)) {
+            properties[p].tenantCriteriaVerified = true;
+        } else {
+            properties[p].tenantCriteriaVerified = false;
         }
     }
     return properties;

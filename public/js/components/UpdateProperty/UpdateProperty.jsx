@@ -249,6 +249,44 @@ class UpdateProperty extends Component {
 							<span id='save-message-success' className='text-success'>Success! Your data was saved!</span>
 							<span id='save-message-failure' className='text-danger'>There was an issue saving your data. Please try again or contact system adminstrator.</span>
 						</div>
+						<br/>
+						<br/>
+						<div style={{'marginLeft': '100px'}}>
+							<h6>What data is 'Basic Info'?</h6>
+							<div>
+								- accepts section 8 DONE
+							</div>
+							<div>- has available units</div>
+							<div>- only serves students</div>
+							<div>- only serves elderly</div>
+							<div>- only serves physically disabled persons</div>
+							<div>- only serves mentally disabled person</div>
+							<div>- only serves veterans</div>
+							<div>- only serves military</div>
+							<div>- only serves domestic abuse survivors</div>
+							<div>- other community served information</div>
+							<div>- does this property accept applicants with history of broken leases (and other criteria)</div>
+							<div>- does this property accept applicants with an eviction history (and other criteria)</div>
+							<div>- does this property accept criminal history (and other criteria)</div>
+							<div>- has waitlist</div>
+							<div>- schools</div>
+						</div>
+						<br/>
+						<div style={{'marginLeft': '100px'}}>
+							<h6>What data is 'Tenant Criteria'?</h6>
+							<div>- website</div>
+							<div>- unit type</div>
+							<div>- council district</div>
+							<div>- total units</div>
+							<div>- total psh units</div>
+							<div>- total income restricted units</div>
+							<div>- property name</div>
+							<div>- street address</div>
+							<div>- city</div>
+							<div>- state</div>
+							<div>- zip code</div>
+							<div>- phone</div>
+						</div>
 					</div>
 					<div className='update-property-right'>
 						<ContactInfo data={this.state.data} />

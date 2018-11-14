@@ -15,7 +15,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The name of the property. This would be the name of the apartment complex. If it is a single family home you can leave this blank.',
         active: true,
-        name: 'Property Name'
+        name: 'Property Name',
+        tags: ['Basic Property Info']
     },
     address: {
         dataType: 'varchar(255)',
@@ -24,7 +25,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The street address of the property.',
         active: true,
-        name: 'Street Address'
+        name: 'Street Address',
+        tags: ['Basic Property Info']
     },
     city: {
         dataType: 'varchar(255)',
@@ -33,7 +35,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The city the property is located in.',
         active: true,
-        name: 'City'
+        name: 'City',
+        tags: ['Basic Property Info']
     },
     state: {
         dataType: 'varchar(255)',
@@ -42,7 +45,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The state the property is located in.',
         active: true,
-        name: 'State'
+        name: 'State',
+        tags: ['Basic Property Info']
     },
     zipcode: {
         dataType: 'varchar(255)',
@@ -51,7 +55,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The zipcode the property is located in.',
         active: true,
-        name: 'Zip Code'
+        name: 'Zip Code',
+        tags: ['Basic Property Info']
     },
     lat: {
         dataType: 'float',
@@ -76,7 +81,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Examples: multifamily, apartment, single-family home, etc.',
         active: true,
-        name: 'Unit Type'
+        name: 'Unit Type',
+        tags: ['Basic Property Info']
     },
     census_tract: {
         dataType: 'varchar(255)',
@@ -109,7 +115,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The council district the property is in.',
         active: true,
-        name: 'Council District'
+        name: 'Council District',
+        tags: ['Basic Property Info']
     },
     phone: {
         dataType: 'varchar(255)',
@@ -118,7 +125,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The phone number of landlord or leasing agent.',
         active: true,
-        name: 'Phone'
+        name: 'Phone',
+        tags: ['Basic Property Info']
     },
     email: {
         dataType: 'varchar(255)',
@@ -127,7 +135,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The email of the landlord or leasing agent.',
         active: true,
-        name: 'Email'
+        name: 'Email',
+        tags: ['Basic Property Info']
     },
     property_manager_or_landlord: {
         dataType: 'varchar(255)',
@@ -145,7 +154,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The website of the property.',
         active: true,
-        name: 'Website'
+        name: 'Website',
+        tags: ['Basic Property Info']
     },
     students_only: {
         dataType: 'tinyint(1)',
@@ -154,7 +164,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow students?',
         active: true,
-        name: 'Is this a student only property?'
+        name: 'Is this a student only property?',
+        tags: ['Tenant Criteria Info']
     },
     community_elderly: {
         dataType: 'tinyint(1)',
@@ -163,7 +174,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow elderly?',
         active: true,
-        name: 'Does this property only serve the elderly?'
+        name: 'Does this property only serve the elderly?',
+        tags: ['Tenant Criteria Info']
     },
     community_disabled: {
         dataType: 'tinyint(1)',
@@ -172,7 +184,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow disabled persons?',
         active: true,
-        name: 'Does this property only serve physically disabled persons?'
+        name: 'Does this property only serve physically disabled persons?',
+        tags: ['Tenant Criteria Info']
     },
     community_domestic_abuse_survivor: {
         dataType: 'tinyint(1)',
@@ -181,7 +194,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow domestic abuse survivors?',
         active: true,
-        name: 'Does this property only serve domestic abuse survivors?'
+        name: 'Does this property only serve domestic abuse survivors?',
+        tags: ['Tenant Criteria Info']
     },
     community_mental: {
         dataType: 'tinyint(1)',
@@ -190,7 +204,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow persons with mental disabilities?',
         active: true,
-        name: 'Does this property only serve mentally disabled persons?'
+        name: 'Does this property only serve mentally disabled persons?',
+        tags: ['Tenant Criteria Info']
     },
     community_veteran: {
         dataType: 'tinyint(1)',
@@ -199,7 +214,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow veterans?',
         active: true,
-        name: 'Does this property only serve veterans?'
+        name: 'Does this property only serve veterans?',
+        tags: ['Tenant Criteria Info']
     },
     community_military: {
         dataType: 'tinyint(1)',
@@ -208,7 +224,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property only allow military persons?',
         active: true,
-        name: 'Does this property only serve military?'
+        name: 'Does this property only serve military?',
+        tags: ['Tenant Criteria Info']
     },
     only_serves_designated_communities: {
         dataType: 'tinyint(1)',
@@ -223,7 +240,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Any other information about the communities that this property serves.',
         active: true,
-        name: 'Any other information about what communities this property serves?'
+        name: 'Any other information about what communities this property serves?',
+        tags: ['Tenant Criteria Info']
     },
     broken_lease: {
         dataType: 'enum(\'yes\',\'no\',\'depends\')',
@@ -232,7 +250,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property accept tenants with past broken leases?',
         active: true,
-        name: 'Does this property accept applicants with a history of broken leases?'
+        name: 'Does this property accept applicants with a history of broken leases?',
+        tags: ['Tenant Criteria Info']
     },
     broken_lease_criteria: {
         dataType: 'varchar(255)',
@@ -241,7 +260,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Any other information about accepting tenants with broken leases.',
         active: true,
-        name: 'What criteria is used to decide to accept an applicant with a broken lease?'
+        name: 'What criteria is used to decide to accept an applicant with a broken lease?',
+        tags: ['Tenant Criteria Info']
     },
     eviction_history: {
         dataType: 'enum(\'yes\',\'no\',\'depends\')',
@@ -250,7 +270,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property accept tenants with an eviction history?',
         active: true,
-        name: 'Does this property accept applicants with an eviction history?'
+        name: 'Does this property accept applicants with an eviction history?',
+        tags: ['Tenant Criteria Info']
     },
     eviction_history_criteria: {
         dataType: 'varchar(255)',
@@ -259,7 +280,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Any other information about accepting tenants with eviction history.',
         active: true,
-        name: 'What criteria is used to decide to accept an applicant with an eviction history?'
+        name: 'What criteria is used to decide to accept an applicant with an eviction history?',
+        tags: ['Tenant Criteria Info']
     },
     criminal_history: {
         dataType: 'enum(\'yes\',\'no\',\'depends\')',
@@ -268,7 +290,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property accept tenants with a criminal history?',
         active: true,
-        name: 'Does this property accept applicants with a criminal history?'
+        name: 'Does this property accept applicants with a criminal history?',
+        tags: ['Tenant Criteria Info']
     },
     criminal_history_criteria: {
         dataType: 'varchar(255)',
@@ -277,7 +300,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Any other information about accepting tenants with criminal history.',
         active: true,
-        name: 'What criteria is used to decide to accept an applicant with a criminal history?'
+        name: 'What criteria is used to decide to accept an applicant with a criminal history?',
+        tags: ['Tenant Criteria Info']
     },
     has_waitlist: {
         dataType: 'tinyint(1)',
@@ -286,7 +310,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property have a waitlist for affordable housing units?',
         active: true,
-        name: 'Does this property have a waitlist for affordable housing units?'
+        name: 'Does this property have a waitlist for affordable housing units?',
+        tags: ['Tenant Criteria Info']
     },
     total_units: {
         dataType: 'int(11)',
@@ -295,7 +320,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The total number of units the property has. Includes affordable units and market rate units.',
         active: true,
-        name: 'Total Units'
+        name: 'Total Units',
+        tags: ['Basic Property Info']
     },
     total_psh_units: {
         dataType: 'int(11)',
@@ -304,7 +330,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The total number of permanent supportive housing units. Includes vacant or occupied units.',
         active: true,
-        name: 'Total PSH Units'
+        name: 'Total PSH Units',
+        tags: ['Basic Property Info']
     },
     has_allocated_psh_units: {
         dataType: 'tinyint(1)',
@@ -336,7 +363,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'The total number of income restricted units. Includes vacant and occupied units.',
         active: true,
-        name: 'Total Income Restricted Units'
+        name: 'Total Income Restricted Units',
+        tags: ['Basic Property Info']
     },
     has_allocated_ir_units: {
         dataType: 'tinyint(1)',
@@ -367,7 +395,7 @@ module.exports.fieldsMap = {
         groupOrderNum: 6,
         editable: true,
         description: 'Total number of units that accept section 8 vouchers. This includes vacant and occupied units.',
-        active: true,
+        active: false,
         name: 'Total Section 8 Units'
     },
     accepts_section_8: {
@@ -377,7 +405,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property accept section 8 vouchers?',
         active: true,
-        name: 'Does this property accept section 8 vouchers?'
+        name: 'Does this property accept section 8 vouchers?',
+        tags: ['Tenant Criteria Info']
     },
     has_available_section_8: {
         dataType: 'tinyint(1)',
@@ -522,7 +551,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Does this property have any affordable units available today? This includes either income restricted units, section 8 properties, or public housing.',
         active: true,
-        name: 'Does this property have any affordable units (i.e. income restricted, section 8, etc.) available today?'
+        name: 'Does this property have any affordable units (i.e. income restricted, section 8, etc.) available today?',
+        tags: ['Tenant Criteria Info']
     },
     // num_units_mfi_90: {
     //     dataType: 'int(11)'
@@ -712,7 +742,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Name of the elementary school.',
         active: true,
-        name: 'What elementary school?'
+        name: 'What elementary school?',
+        tags: ['Tenant Criteria Info']
     },
     middle_school: {
         dataType: 'varchar(255)',
@@ -721,7 +752,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Name of the middle school.',
         active: true,
-        name: 'What middle school?'
+        name: 'What middle school?',
+        tags: ['Tenant Criteria Info']
     },
     high_school: {
         dataType: 'varchar(255)',
@@ -730,7 +762,8 @@ module.exports.fieldsMap = {
         editable: true,
         description: 'Name of the high school.',
         active: true,
-        name: 'What high school?'
+        name: 'What high school?',
+        tags: ['Tenant Criteria Info']
     },
     affordability_start: {
         dataType: 'datetime',
