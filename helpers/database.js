@@ -164,7 +164,7 @@ async function getUpdatePropertiesList() {
 
 	var res = query(
 		'AffordableHousingDataHub',
-		'SELECT property_name, data_source_ahi, data_source_tdhca, data_source_atc_guide, Properties.id, property_name, address, phone, Properties.email as email, website, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id'
+		'SELECT property_name, data_source_ahi, data_source_tdhca, data_source_atc_guide, Properties.id, property_name, address, phone, Properties.email as email, website, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id WHERE is_duplicate != 1'
 	);
 
 	return res;
