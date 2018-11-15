@@ -250,12 +250,25 @@ class UpdateProperty extends Component {
 							<span id='save-message-failure' className='text-danger'>There was an issue saving your data. Please try again or contact system adminstrator.</span>
 						</div>
 						<br/>
+						<div style={{'marginLeft': '100px'}}>
+							<h6>What data is 'Tenant Criteria'?</h6>
+							<div>- website</div>
+							<div>- unit type</div>
+							<div>- council district</div>
+							<div>- total units</div>
+							<div>- total psh units</div>
+							<div>- total income restricted units</div>
+							<div>- property name</div>
+							<div>- street address</div>
+							<div>- city</div>
+							<div>- state</div>
+							<div>- zip code</div>
+							<div>- phone</div>
+						</div>
 						<br/>
 						<div style={{'marginLeft': '100px'}}>
 							<h6>What data is 'Basic Info'?</h6>
-							<div>
-								- accepts section 8 DONE
-							</div>
+							<div>- accepts section 8 </div>
 							<div>- has available units</div>
 							<div>- only serves students</div>
 							<div>- only serves elderly</div>
@@ -272,21 +285,6 @@ class UpdateProperty extends Component {
 							<div>- schools</div>
 						</div>
 						<br/>
-						<div style={{'marginLeft': '100px'}}>
-							<h6>What data is 'Tenant Criteria'?</h6>
-							<div>- website</div>
-							<div>- unit type</div>
-							<div>- council district</div>
-							<div>- total units</div>
-							<div>- total psh units</div>
-							<div>- total income restricted units</div>
-							<div>- property name</div>
-							<div>- street address</div>
-							<div>- city</div>
-							<div>- state</div>
-							<div>- zip code</div>
-							<div>- phone</div>
-						</div>
 					</div>
 					<div className='update-property-right'>
 						<ContactInfo data={this.state.data} />

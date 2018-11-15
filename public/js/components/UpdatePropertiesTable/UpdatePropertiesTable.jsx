@@ -52,7 +52,7 @@ class UpdatePropertiesTable extends Component {
 		if (p.tenantCriteriaVerified) {
 			elem2 = <button className='table-flag btn btn-success table-flag-verified affordability-info-flag'>Tenant Criteria Verified</button>;
 		} else {
-			elem2 = <button className='table-flag btn btn-danger table-flag-unverified affordability-info-flag'>Tenant Criteria Verified</button>;
+			elem2 = <button className='table-flag btn btn-danger table-flag-unverified affordability-info-flag'>Tenant Criteria Unverified</button>;
 		}
 		return <span>{elem1} {elem2}</span>;
 	}
