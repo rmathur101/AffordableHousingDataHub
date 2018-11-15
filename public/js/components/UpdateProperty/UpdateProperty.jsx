@@ -251,7 +251,7 @@ class UpdateProperty extends Component {
 						</div>
 						<br/>
 						<div style={{'marginLeft': '100px'}}>
-							<h6>What data is 'Tenant Criteria'?</h6>
+							<h6>What data is 'Basic Info'?</h6>
 							<div>- website</div>
 							<div>- unit type</div>
 							<div>- council district</div>
@@ -267,7 +267,7 @@ class UpdateProperty extends Component {
 						</div>
 						<br/>
 						<div style={{'marginLeft': '100px'}}>
-							<h6>What data is 'Basic Info'?</h6>
+							<h6>What data is 'Tenant Criteria'?</h6>
 							<div>- accepts section 8 </div>
 							<div>- has available units</div>
 							<div>- only serves students</div>
