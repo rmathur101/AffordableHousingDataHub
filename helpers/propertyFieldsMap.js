@@ -702,7 +702,7 @@ module.exports.fieldsMap = {
         name: 'Any other information about washer / dryer?'
     },
     allows_pet: {
-        dataType: 'enum(\'yes\',\'no\',\'service_only\')',
+        dataType: 'enum(\'yes\',\'no\')',
         group: 'Amenities',
         groupOrderNum: 7,
         editable: true,
