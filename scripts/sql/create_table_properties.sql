@@ -93,7 +93,7 @@ CREATE TABLE `Properties` (
   `wd_hookups` tinyint(1) DEFAULT NULL,
   `wd_onsite` tinyint(1) DEFAULT NULL,
   `wd_other` varchar(255) DEFAULT NULL,
-  `allows_pet` enum('yes','no','service_only') DEFAULT NULL,
+  `allows_pet` enum('yes','no') DEFAULT NULL,
   `pet_other` varchar(255) DEFAULT NULL,
   `bus_transport_dist` varchar(255) DEFAULT NULL,
   `security` varchar(255) DEFAULT NULL,
