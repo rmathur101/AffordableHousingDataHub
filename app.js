@@ -7,6 +7,8 @@ var dbHelper = require('./helpers/database.js');
 var propertyFieldsMap = require('./helpers/propertyFieldsMap').fieldsMap;
 var csv = require('fast-csv');
 var _ = require("underscore");
+var cors = require('cors');
+
 
 var app = express();
 
@@ -15,6 +17,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(sessionHelper.initSession());
+app.use(cors());
 
 function addVerificationFlags(properties, verifications) {
     function isPropertyInfoVerified(property, verifs) {
@@ -152,6 +155,7 @@ app.get('/update_properties_list', async (req, res) => {
     }
 });
 
+app.options('*', cors());
 app.get('/get_all_properties', async (req, res) => {
     try {
         var result = await dbHelper.getAllProperties();
