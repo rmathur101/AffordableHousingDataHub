@@ -170,6 +170,75 @@ async function getUpdatePropertiesList() {
 	return res;
 }
 
+async function getAllProperties() {
+	var includeFields = [
+		'property_name',
+		'address',
+		'city',
+		'state',
+		'zipcode',
+		'lat',
+		'longitude',
+		'unit_type',
+		'council_district',
+		'phone',
+		'email',
+		'website',
+		'students_only',
+		'community_elderly',
+		'community_disabled',
+		'community_domestic_abuse_survivor',
+		'community_mental',
+		'community_military',
+		'community_served_descriptions',
+		'broken_lease',
+		'broken_lease_criteria',
+		'eviction_history',
+		'eviction_history_criteria',
+		'criminal_history',
+		'criminal_history_criteria',
+		'has_waitlist',
+		'total_units',
+		'total_psh_units',
+		'total_income_restricted_units',
+		'accepts_section_8',
+		'total_public_housing_units',
+		'num_units_mfi_30',
+		'num_units_mfi_40',
+		'num_units_mfi_50',
+		'num_units_mfi_60',
+		'num_units_mfi_70',
+		'num_units_mfi_80',
+		'num_units_mfi_90',
+		'num_units_mfi_100',
+		'num_units_mfi_110',
+		'num_units_mfi_120',
+		'has_playground',
+		'has_pool',
+		'has_off_street_parking',
+		'has_air_conditioning',
+		'has_ceiling_fans',
+		'wd_unit',
+		'wd_hookups',
+		'wd_onsite',
+		'wd_other',
+		'allows_pet',
+		'pet_other',
+		'security',
+		'elementary_school',
+		'middle_school',
+		'high_school',
+		'affordability_expiration',
+		'has_available_affordable_units'
+	];
+	var fieldsString = includeFields.join(', ');
+	var res = query(
+		'AffordableHousingDataHub',
+		`SELECT ${fieldsString} FROM Properties WHERE is_duplicate != 1`
+	);
+	return res;
+}
+
 // create conn, do query, close connection
 async function query(db, query) {
 	// in order to test your theory, your theory is that you don't need a try catch, because
@@ -362,4 +431,5 @@ module.exports.unassignUser = unassignUser;
 module.exports.assign_property_to_user = assign_property_to_user;
 module.exports.getPropertyVerifications = getPropertyVerifications;
 module.exports.getAllPropertyVerifications = getAllPropertyVerifications;
+module.exports.getAllProperties = getAllProperties;
 
