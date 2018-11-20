@@ -19,6 +19,7 @@ class UpdatePropertiesTable extends Component {
 		}
 
 		this.handlePropertyClick = this.handlePropertyClick.bind(this);
+		this.getTotalFieldCount = this.getTotalFieldCount.bind(this);
 	}
 
 	handlePropertyClick(e) {
@@ -141,6 +142,17 @@ class UpdatePropertiesTable extends Component {
 		e.placeholder=`Search by ${val.toLowerCase()}...`;
 	}
 
+	getTotalFieldCount(name) {
+		var propertyData = this.state.propertyData;
+		var total = 0;
+		for (var p of propertyData) {
+			if (p[name]) {
+				total = total + 1;
+			}
+		}
+		return total;
+	}
+
 	render() {
 		if (this.state.redirectTo) {
 			return <Redirect to={ this.state.redirectTo } />;
@@ -150,6 +162,12 @@ class UpdatePropertiesTable extends Component {
 			<div>
 				<br/>
 				<div className='form-group'>
+					<div style={{'marginLeft': '50px'}}>
+						<span><b>Basic Info Verified (complete / total):</b> {this.getTotalFieldCount('basicPropertyInfoVerified')} / {this.state.propertyData.length}</span>
+						<br/>
+						<span><b>Tenant Criteria Verified (complete / total):</b> {this.getTotalFieldCount('tenantCriteriaVerified')} / {this.state.propertyData.length}</span>
+					</div>
+					<br/>
 					<button
 						id='new-property-id'
 						className='btn btn-primary'
