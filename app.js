@@ -244,6 +244,33 @@ app.get('/property', async(req, res) => {
     }
 });
 
+app.post('/new_property', async(req, res) => {
+    function hasRequiredInfo(req) {
+        if (req.body.property_name && req.body.street_address && req.body.city && req.body.state && req.body.zipcode) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    try {
+        if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
+            return res.status(401).send({success: false, redirect: '/'})
+        }
+        if (hasRequiredInfo(req)) {
+            var result = await dbHelper.createProperty(req.body.property_name, req.body.street_address, req.body.city, req.body.state, req.body.zipcode);
+            return res.status(200).send({success: true, redirect: `/update_property/${result.insertId}`})
+        } else {
+            console.log('or here');
+            return res.status(500).send({success: false, message: 'All fields are required'});
+        }
+
+    } catch (e) {
+        logger.log('error', e, {origin: 'server'});
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
+});
+
 
 app.get('/*', (req, res) => {
     res.sendFile(__dirname + "/public/main.html");

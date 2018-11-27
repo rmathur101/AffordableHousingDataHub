@@ -342,6 +342,14 @@ async function unassignUser(id) {
 	return false;
 }
 
+async function createProperty(name, address, city, state, zip) {
+	var result = await query(
+		'AffordableHousingDataHub',
+		`INSERT INTO Properties (property_name, address, city, state, zipcode) VALUES (${mysql.escape(name)}, ${mysql.escape(address)}, ${mysql.escape(city)}, ${mysql.escape(state)}, ${mysql.escape(zip)}) `
+	);
+	return result;
+}
+
 async function assign_property_to_user(propertyId, userId) {
 	// TODO: need to error handle properly, mysql escape string
 	if (propertyId && userId) {
@@ -432,4 +440,5 @@ module.exports.assign_property_to_user = assign_property_to_user;
 module.exports.getPropertyVerifications = getPropertyVerifications;
 module.exports.getAllPropertyVerifications = getAllPropertyVerifications;
 module.exports.getAllProperties = getAllProperties;
+module.exports.createProperty = createProperty;
 
