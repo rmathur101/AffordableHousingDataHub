@@ -172,7 +172,7 @@ class UpdatePropertiesTable extends Component {
 						id='new-property-id'
 						className='btn btn-primary'
 						onClick={this.handleNewPropertyClick.bind(this)}
-						disabled={true}
+						disabled={false}
 					>New Property</button>
 					<input onKeyUp={this.handleSearchKeyUp.bind(this)} className='form-control' type="text" id="table-search-input" placeholder="Search by address..." />
 					<select id='table-search-select' onChange={this.handleSearchSelectChange.bind(this)} className="custom-select">
