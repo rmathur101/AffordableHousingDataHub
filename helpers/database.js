@@ -172,6 +172,7 @@ async function getUpdatePropertiesList() {
 
 async function getAllProperties() {
 	var includeFields = [
+		'id',
 		'property_name',
 		'address',
 		'city',
