@@ -63,6 +63,11 @@ class UpdatePropertiesTable extends Component {
 		return elem;
 	}
 
+	renderFundingSources(p) {
+		var elem = <span>{p.funding_source_nhcd ? 'NHCD' : ''} {p.funding_source_tdhca ? 'TDHCA' : ''} </span>
+		return elem;
+	}
+
 	renderRows() {
 		var propertyData = this.state.propertyData;
 
@@ -79,10 +84,12 @@ class UpdatePropertiesTable extends Component {
 					<td>{p.id}</td>
 					<td>{p.property_name}</td>
 					<td>{p.address}</td>
+					<td>{p.city}</td>
 					<td>{p.zipcode}</td>
 					<td>{p.total_income_restricted_units ? p.total_income_restricted_units : <span className='text-danger'>unknown</span>}</td>
 					<td>{p.phone}</td>
 					<td>{this.renderDataSources(p)}</td>
+					<td>{this.renderFundingSources(p)}</td>
 					<td>{p.assigned_user_email ? p.assigned_user_email : 'none'}</td>
 					<td>{this.renderFlags(p)}</td>
 					<td><button data-property-id={p.id} onClick={this.handlePropertyClick} className='table-view-btn btn-primary btn'>View</button></td>
@@ -190,10 +197,12 @@ class UpdatePropertiesTable extends Component {
 							<th scope="col">ID</th>
 							<th scope="col">Name</th>
 							<th scope="col">Address</th>
+							<th scope="col">City</th>
 							<th scope="col">Zip</th>
 							<th scope="col">Total Income Restricted Units</th>
 							<th scope="col">Contact</th>
 							<th scope="col">Data Source(s)</th>
+							<th scope="col">Funding Source(s)</th>
 							<th scope="col">Assigned To</th>
 							<th scope="col">Flags</th>
 							<th></th>
