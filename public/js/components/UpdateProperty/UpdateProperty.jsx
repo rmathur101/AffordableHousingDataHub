@@ -101,7 +101,7 @@ class UpdateProperty extends Component {
 		function addGroupFieldsData(groupFieldsMap, values) {
 			for (var field in groupFieldsMap) {
 				var value = values[field];
-				if (value) {
+				if (value == 0 || value) {
 					groupFieldsMap[field].value = value;
 				} else {
 					groupFieldsMap[field].value = null;
