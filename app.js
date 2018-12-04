@@ -157,8 +157,25 @@ app.get('/update_properties_list', async (req, res) => {
 
 app.options('*', cors());
 app.get('/get_all_properties', async (req, res) => {
+    function isCityAustin(city) {
+        if (!city) {
+            return false;
+        }
+        var tempCity = city.toLowerCase();
+        if (tempCity.match(/.*austin.*/)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     try {
         var result = await dbHelper.getAllProperties();
+        var verifications = await dbHelper.getAllPropertyVerifications();
+        result = addVerificationFlags(result, verifications);
+        result = _.filter(result, function(property) {
+            return property.basicPropertyInfoVerified;
+        });
         return res.status(200).send({success: true, data: result});
     } catch (e) {
         return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});

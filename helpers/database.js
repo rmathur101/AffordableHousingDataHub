@@ -233,7 +233,7 @@ async function getAllProperties() {
 		'has_available_affordable_units'
 	];
 	var fieldsString = includeFields.join(', ');
-	var res = query(
+	var res = await query(
 		'AffordableHousingDataHub',
 		`SELECT ${fieldsString} FROM Properties WHERE is_duplicate != 1`
 	);
