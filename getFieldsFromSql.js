@@ -66,12 +66,20 @@ async function execute() {
 	];
 	// var fields = await dbHelper.query('AffordableHousingDataHub', 'describe Properties');
 	var fields = await dbHelper.query('AffordableHousingDataHub', 'SELECT * from Properties');
-	for (var field of fields) {
-		fieldsObj[field.Field] = {
-			dataType: field.Type
-		}
+	// for (var field of fields) {
+	// 	fieldsObj[field.Field] = {
+	// 		dataType: field.Type
+	// 	}
+	// }
+
+	for (var f of includeFields) {
+		var val = await dbHelper.query('AffordableHousingDataHub', `SELECT count(*) as val from Properties where ${f} is NULL`);
+		console.log(f);
+		var num = val[0]['val'];
+		console.log(num);
+		console.log(num/537*100);
+		console.log('');
 	}
-	console.log(fieldsObj);
 }
 
 execute();
