@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-webpack": "webpack --progress --colors --watch",
-    "build-dev": "npm run build-webpack"
+    "build-dev": "npm run build-webpack",
+    "dev": "NODE_ENV=DEVELOPMENT nodemon --inspect app.js"
   },
   "author": "rohan mathur",
   "dependencies": {

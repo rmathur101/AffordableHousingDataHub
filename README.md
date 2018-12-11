@@ -18,5 +18,5 @@ AffordableHousingDataHub uses node.js on the backend and react.js on the front e
   - db_socket_path.txt: the location of the mysql socket file that will allow the app to connect to mysql, for example: /tmp/mysql.sock
     - NOTE: MySQL can use either an internet socket (addr:port) or a UNIX socket (on a filesystem) for connections.
   - NOTE: if you get this message: "Client does not support authentication protocol requested by server; consider upgrading MySQL client" - use this sql statment to identify the user with the password: ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password'
-8. run run_dev.sh to run the backend in development. this will run the node server and watch for any backend changes.
+8. run `npm run dev` to run the backend in development. this will run the node server and watch for any backend changes.
 9. run npm run build-dev. this will bunlde js files from public/js into public/dist and watch for any changes in public/js.
