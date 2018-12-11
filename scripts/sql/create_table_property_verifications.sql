@@ -6,5 +6,6 @@ CREATE TABLE `PropertyVerifications` (
   `property_id` int(11) NOT NULL,
   `verified` tinyint(1) DEFAULT '0',
   `last_updated` datetime DEFAULT NULL,
+  `updated_by_user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=utf8

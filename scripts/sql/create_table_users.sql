@@ -8,5 +8,6 @@ CREATE TABLE `Users` (
   `org` varchar(150) NOT NULL,
   `passwd` varchar(150) NOT NULL,
   `session_id` varchar(150) DEFAULT NULL,
+  `is_duplicate` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8

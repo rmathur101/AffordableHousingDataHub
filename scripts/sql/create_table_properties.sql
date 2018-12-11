@@ -112,5 +112,7 @@ CREATE TABLE `Properties` (
   `data_source_ahi` tinyint(1) DEFAULT NULL,
   `tcad_id` int(11) DEFAULT NULL,
   `assigned_user_id` int(11) DEFAULT NULL,
+  `funding_source_tdhca` varchar(255) DEFAULT NULL,
+  `funding_source_nhcd` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2859 DEFAULT CHARSET=utf8
