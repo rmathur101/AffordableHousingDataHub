@@ -771,9 +771,12 @@ module.exports.fieldsMap = {
         active: false
     },
     affordability_expiration: {
-        dataType: 'datetime',
-        group: null,
-        active: false
+        dataType: 'varchar(255)',
+        group: 'Affordability Information',
+        groupOrderNum: 24,
+        editable: false,
+        active: true,
+        name: 'Affordability Expiration of Property'
     },
     ahi_project_id: {
         dataType: 'int(11)',
