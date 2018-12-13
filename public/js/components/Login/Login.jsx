@@ -33,7 +33,6 @@ class Login extends Component {
 			'/login',
 			postData
 		).then((res) => {
-			console.log(res);
 			var elem = document.getElementById('login_failed_msg');
 			if (!res.data.success) {
 				elem.style.display = 'block';
