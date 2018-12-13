@@ -74,9 +74,6 @@ class UpdateProperty extends Component {
 		} else {
 			this.state.updatedData[data.field].value = data.value;
 		}
-
-		console.log('inside of handleUpdateData in UpdateProperty.jsx');
-		console.log(this.state.updatedData);
 	}
 
 	updateVerifications(field, verifyVal) {
