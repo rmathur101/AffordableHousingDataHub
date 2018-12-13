@@ -23,9 +23,6 @@ class UpdatePropertiesTable extends Component {
 	}
 
 	handlePropertyClick(e) {
-		console.log(e.currentTarget);
-		console.log(e.currentTarget.dataset.propertyId);
-
 		if (e && e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.propertyId) {
 			this.setState({
 				'redirectTo': '/update_property/' + e.currentTarget.dataset.propertyId
@@ -43,13 +40,11 @@ class UpdatePropertiesTable extends Component {
 
 	renderFlags(p) {
 		var elem1, elem2;
-		// if (p.propertyInfoVerified) {
 		if (p.basicPropertyInfoVerified) {
 			elem1 = <button className='table-flag btn btn-success table-flag-verified'>Basic Info Verified</button>;
 		} else {
 			elem1 = <button className='table-flag btn btn-danger table-flag-unverified'>Basic Info Unverified</button>;
 		}
-		// if (p.affordabilityInfoVerified) {
 		if (p.tenantCriteriaVerified) {
 			elem2 = <button className='table-flag btn btn-success table-flag-verified affordability-info-flag'>Tenant Criteria Verified</button>;
 		} else {
@@ -73,8 +68,6 @@ class UpdatePropertiesTable extends Component {
 
 		propertyData = _.sortBy(propertyData, 'total_income_restricted_units');
 		propertyData.reverse();
-
-		console.log('something');
 
 		var rows = [];
 
@@ -136,8 +129,6 @@ class UpdatePropertiesTable extends Component {
 
 	handleSearchSelectChange(e) {
 		var val = e.target.value;
-		console.log('what is this search val');
-		console.log(val);
 		this.setState({
 			'searchBy': val
 		});
