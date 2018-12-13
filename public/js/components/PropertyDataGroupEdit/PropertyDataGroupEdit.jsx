@@ -36,10 +36,6 @@ class PropertyDataGroupEdit extends Component {
 	}
 
 	onInputChange(field, e) {
-		console.log('new e');
-		console.log(e.target.value);
-		console.log('new field');
-		console.log(field);
 		var updateData = {
 			field: field,
 			value: e.target.value,
@@ -109,7 +105,7 @@ class PropertyDataGroupEdit extends Component {
 			e.target.classList.remove('verify-btn');
 			e.target.classList.add('verified-btn');
 
-			// you need to find a way to update the verifications object so when you close / open, the value still exists
+			//TODO: you need to find a way to update the verifications object so when you close / open, the value still exists
 			this.props.updateVerifications(field, 1);
 		}
 
@@ -271,9 +267,6 @@ class PropertyDataGroupEdit extends Component {
 		}
 
 		for (var d in data) {
-			console.log(d);
-			console.log(data[d]);
-			console.log('');
 			group.push(
 				<div className='property-group-input-container' key={d}>
 					<span><b>{data[d].name}: </b><img onClick={ this.handleInfoClick.bind(this, d) } className='info-img' src='/img/info.png'/></span>
