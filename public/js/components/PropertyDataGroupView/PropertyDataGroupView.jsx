@@ -5,8 +5,6 @@ class PropertyDataGroupView extends Component {
 	constructor(props) {
 		super(props);
 
-		console.log(props);
-
 		this.state = {
 			groupName: props.name,
 			data: props.data
