@@ -32,18 +32,18 @@ async function updateData(updateDataObj, propertyId, user_id) {
 					var verifyId = verifyExists[0].id;
 					await query(
 						'AffordableHousingDataHub',
-						`UPDATE PropertyVerifications SET verified = ${verify}, last_updated = '${moment().format('YYYY-MM-DD HH:mm:ss')}', updated_by_user_id=${user_id} WHERE id = ${verifyId}`
+						`UPDATE PropertyVerifications SET verified = ${verify}, last_updated = '${moment().format('YYYY-MM-DD HH:mm:ss')}', updated_by_user_id=${mysql.escape(user_id)} WHERE id = ${verifyId}`
 					);
 				} else {
 					await query(
 						'AffordableHousingDataHub',
-						`INSERT INTO PropertyVerifications (verified, property_id, field, last_updated, updated_by_user_id) VALUES (${mysql.escape(verify)}, ${mysql.escape(propertyId)}, ${mysql.escape(field)}, '${moment().format('YYYY-MM-DD HH:mm:ss')}', ${user_id})`
+						`INSERT INTO PropertyVerifications (verified, property_id, field, last_updated, updated_by_user_id) VALUES (${mysql.escape(verify)}, ${mysql.escape(propertyId)}, ${mysql.escape(field)}, '${moment().format('YYYY-MM-DD HH:mm:ss')}', ${mysql.escape(user_id)})`
 					);
 				}
 
 			}
 
-			// value could be null for example if they put unknown
+			// value could be null, but not undefined - for example if they selected unknown through the UI
 			if (!_.isUndefined(value)) {
 				// check that field is in fieldsMap, and that it is active
 				// run sql command to update that one field
@@ -123,7 +123,6 @@ async function getUser(email) {
 		await closeDatabaseConnection(conn);
 
 		if (res.length > 1) {
-		// if (true) {
 			throw new Error('getUser() found multiple users');
 		}
 	} catch (e) {
@@ -145,7 +144,7 @@ async function createUser(firstName, lastName, org, email, passwd) {
 			await closeDatabaseConnection(conn);
 		} catch(e) {
 			await closeDatabaseConnection(conn);
-			return reject(new Error(thisFilename + ' => createUser(), caught exception:\n' + e.stack)); // TODO: is this right?
+			return reject(new Error(thisFilename + ' => createUser(), caught exception:\n' + e.stack)); // TODO: double check error handling in this case
 		}
 
 		return resolve(results)
@@ -153,14 +152,7 @@ async function createUser(firstName, lastName, org, email, passwd) {
 }
 
 async function getUpdatePropertiesList() {
-	// TODO: properly handle errors
-	// var conn = await getDatabaseConnection();
-	// var res = await queryDatabase(
-	// 	conn,
-	// 	'AffordableHousingDataHub',
-	// 	'SELECT id, property_name, address, phone, email, website, total_income_restricted_units, total_section_8_units, zipcode FROM Properties'
-	// );
-	// await closeDatabaseConnection(conn);
+	// TODO: error handling
 
 	var res = query(
 		'AffordableHousingDataHub',
@@ -242,12 +234,7 @@ async function getAllProperties() {
 
 // create conn, do query, close connection
 async function query(db, query) {
-	// in order to test your theory, your theory is that you don't need a try catch, because
-	// you don't need to catch an error here, if there is an error, then it should be caught in a more upstream
-	// block, but if there is an error in queryDatabase for example, does that mean that closeDatbaseConnection will
-	// not be called?
-
-	// try {
+		// TODO: error handling
 		var conn = await getDatabaseConnection();
 		var res = await queryDatabase(
 			conn,
@@ -255,24 +242,11 @@ async function query(db, query) {
 			query
 		);
 		await closeDatabaseConnection(conn);
-	// } catch (e) {
-		// await closeDatabaseConnection(conn);
-		// throw e;
-	// }
-
 	return res;
 }
 
 async function getProperty(id) {
 	// TODO: properly handle errors
-	// var conn = await getDatabaseConnection();
-	// var res = await queryDatabase(
-	// 	conn,
-	// 	'AffordableHousingDataHub',
-	// 	`SELECT * from Properties WHERE id = ${id}`
-	// );
-	// await closeDatabaseConnection(conn);
-
 	var res = await query(
 		'AffordableHousingDataHub',
 		`SELECT * from Properties WHERE id = ${id}`
@@ -352,11 +326,11 @@ async function createProperty(name, address, city, state, zip) {
 }
 
 async function assign_property_to_user(propertyId, userId) {
-	// TODO: need to error handle properly, mysql escape string
+	// TODO: need to error handle properly
 	if (propertyId && userId) {
 		var res = await query(
 			'AffordableHousingDataHub',
-			`UPDATE Properties SET assigned_user_id = ${userId} WHERE id = ${propertyId}`
+			`UPDATE Properties SET assigned_user_id = ${mysql.escape(userId)} WHERE id = ${propertyId}`
 		);
 		return res;
 	}
@@ -407,7 +381,6 @@ async function getDatabaseConnection() {
 					host:'localhost',
 					database: 'AffordableHousingDataHub'
 				});
-				// TODO: facillitate connection to internet socket (probs hosted on aws)
 			}
 
 			conn.connect((e) => {
