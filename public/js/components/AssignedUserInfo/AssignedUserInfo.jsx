@@ -21,8 +21,6 @@ class AssignedUserInfo extends Component {
 		var queryString = `/get_assigned_user?propertyId=${propertyId}&userEmail=${localStorage.getItem('email')}`;
 		axios.get(queryString)
 			.then((res) => {
-				console.log('what is res');
-				console.log(res);
 				var assignedTo = null;
 				if (res.data.data.length > 0) {
 					assignedTo = res.data.data[0].email;
@@ -30,9 +28,6 @@ class AssignedUserInfo extends Component {
 				this.setState({'assignedTo': assignedTo, 'showAssignedUserInfo': true});
 			})
 			.catch((e) => {
-				console.log('inside catch');
-				console.log(e);
-				console.log(e.response);
 				if (e && e.response && !e.response.data.success && e.response.data.redirect) {
 					this.setState({redirectTo: '/'});
 				}
@@ -52,14 +47,9 @@ class AssignedUserInfo extends Component {
 		var queryString = `/unassign_user?propertyId=${propertyId}&userEmail=${localStorage.getItem('email')}`;
 		axios.get(queryString)
 			.then((res) => {
-				console.log('what is res');
-				console.log(res);
 				this.setState({'assignedTo': null, 'showAssignedUserInfo': true});
 			})
 			.catch((e) => {
-				console.log('inside catch');
-				console.log(e);
-				console.log(e.response);
 				if (e && e.response && !e.response.data.success && e.response.data.redirect) {
 					this.setState({redirectTo: '/'});
 				}
@@ -71,14 +61,9 @@ class AssignedUserInfo extends Component {
 		var queryString = `/assign_property_to_user?propertyId=${propertyId}&userEmail=${localStorage.getItem('email')}`;
 		axios.get(queryString)
 			.then((res) => {
-				console.log('what is res');
-				console.log(res);
 				this.setState({'assignedTo': res.data.assignedTo, 'showAssignedUserInfo': true});
 			})
 			.catch((e) => {
-				console.log('inside catch');
-				console.log(e);
-				console.log(e.response);
 				if (e && e.response && !e.response.data.success && e.response.data.redirect) {
 					this.setState({redirectTo: '/'});
 				}
