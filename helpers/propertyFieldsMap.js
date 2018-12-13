@@ -1,3 +1,5 @@
+// this object defines metadata for various fields, configuration here propogates to what fields show up on front end
+
 module.exports.fieldsMap = {
     id: {
         dataType: 'int(11)',
