@@ -8,14 +8,14 @@ AffordableHousingDataHub uses node.js on the backend and react.js on the front e
 1. npm install.
 2. create a folder called 'config' with the files in the folder called 'sample_config'. by default git will ignore this directory under the app folder.
 3. create a file called 'config_path.txt' within the app folder. by default git will ignore this file. put the absolute path to the config folder you created. for example, /Users/britney/Desktop/affordable_housing_data_hub/app/config/
-4. make sure that you have mysql installed on whatever machine is running the app
-5. under app/sql you'll find development_db.sql. import this into your sql instance, and it will create / replace with a database called AffordableHousingDataHub. This will contain property data as of 12/18/18. It will also include one user account that you can use for testing. Email is 'test@gmail.com'. Password is 'password'.
-6. in your config directory, add the following values for each of the files
+4. in your config directory, add the following values for each of the files
   - db_user.txt: user with read / write access to database AffordableHousingDataHub
   - db_pass.txt: password of user
   - session_secret: some secret created by you, will be used by express-session to encrypt / decrypt session information
   - db_socket_path.txt: the location of the mysql socket file that will allow the app to connect to mysql, for example: /tmp/mysql.sock
     - NOTE: MySQL can use either an internet socket (addr:port) or a UNIX socket (on a filesystem) for connections.
-  - NOTE: if you get this message: "Client does not support authentication protocol requested by server; consider upgrading MySQL client" - use this sql statment to identify the user with the password: ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password'
+    - NOTE: if you get this message: "Client does not support authentication protocol requested by server; consider upgrading  MySQL client" - use this sql statment to identify the user with the password: ALTER USER 'root' IDENTIFIED WITH         mysql_native_password BY 'password'
+5. make sure that you have mysql installed on whatever machine is running the app
+6. under app/sql you'll find development_db.sql. import this into your sql instance, and it will create / replace with a database called AffordableHousingDataHub. This will contain property data as of 12/18/18. It will also include one user account that you can use for testing. Email is 'test@gmail.com'. Password is 'password'.
 7. run `npm run dev` to run the backend in development. this will run the node server and watch for any backend changes.
-8. run npm run build-dev. this will bunlde js files from public/js into public/dist and watch for any changes in public/js.
+8. run `npm run build-dev`. this will bunlde js files from public/js into public/dist and watch for any changes in public/js.
