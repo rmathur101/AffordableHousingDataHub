@@ -54,12 +54,12 @@ class UpdatePropertiesTable extends Component {
 	}
 
 	renderDataSources(p) {
-		var elem = <span>{p.data_source_ahi ? 'AHI' : ''} {p.data_source_tdhca ? 'TDHCA' : ''} {p.data_source_atc_guide ? 'GAGHAA' : ''} </span>
+		var elem = <span>{p.data_source_ahi ? 'AHI' : ''} {p.data_source_tdhca ? 'TDHCA' : ''} {p.data_source_atc_guide ? 'GAGHAA' : ''}</span>
 		return elem;
 	}
 
 	renderFundingSources(p) {
-		var elem = <span>{p.funding_source_nhcd ? 'NHCD' : ''} {p.funding_source_tdhca ? 'TDHCA' : ''} </span>
+		var elem = <span>{p.funding_source_nhcd ? 'NHCD' : ''} {p.funding_source_tdhca ? 'TDHCA' : ''} {p.funding_source_aahc ? 'HACA' : ''} {p.funding_source_hatc ? 'HATC' : ''}</span>
 		return elem;
 	}
 
@@ -100,9 +100,10 @@ class UpdatePropertiesTable extends Component {
 			'Address': 2,
 			'Property ID': 0,
 			'Property Name': 1,
-			'Assigned To': 7,
-			'Data Source': 6,
-			'Flag': 8
+			'Assigned To': 9,
+			'Data Source': 7,
+			'Funding Source': 8,
+			'Flag':10
 		};
 
 		var index = searchByMap[searchBy];
@@ -179,6 +180,7 @@ class UpdatePropertiesTable extends Component {
 						<option>Property Name</option>
 						<option>Assigned To</option>
 						<option>Data Source</option>
+						<option>Funding Source</option>
 						<option>Flag</option>
 					</select>
 				</div>
