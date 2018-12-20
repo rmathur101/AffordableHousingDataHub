@@ -232,6 +232,14 @@ async function getAllProperties() {
 	return res;
 }
 
+async function getAllPropertiesAllFields() {
+	var res = await query(
+		'AffordableHousingDataHub',
+		'SELECT * FROM Properties where is_duplicate != 1'
+	);
+	return res;
+}
+
 // create conn, do query, close connection
 async function query(db, query) {
 		// TODO: error handling
@@ -414,5 +422,6 @@ module.exports.assign_property_to_user = assign_property_to_user;
 module.exports.getPropertyVerifications = getPropertyVerifications;
 module.exports.getAllPropertyVerifications = getAllPropertyVerifications;
 module.exports.getAllProperties = getAllProperties;
+module.exports.getAllPropertiesAllFields = getAllPropertiesAllFields;
 module.exports.createProperty = createProperty;
 

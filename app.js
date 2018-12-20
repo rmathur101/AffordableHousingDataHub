@@ -182,6 +182,15 @@ app.get('/get_all_properties', async (req, res) => {
     }
 });
 
+app.get('/get_all_data', async(req, res) => {
+    try {
+        var result = await dbHelper.getAllPropertiesAllFields();
+        return res.status(200).send({success: true, data: result});
+    } catch (e) {
+        return res.status(500).send({success: false, error: e.stack.toString(), serverSideError: true});
+    }
+});
+
 app.get('/get_assigned_user', async(req, res) => {
     try {
         if (!await sessionHelper.isAuthorized(req.query.userEmail, req.sessionID)) {
