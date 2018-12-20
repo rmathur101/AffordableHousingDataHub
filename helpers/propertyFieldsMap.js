@@ -768,9 +768,11 @@ module.exports.fieldsMap = {
         tags: ['Tenant Criteria Info']
     },
     affordability_start: {
-        dataType: 'datetime',
-        group: null,
-        active: false
+        dataType: 'varchar(255)',
+        group: 'Affordability Information',
+        active: true,
+        editable: false,
+        name: 'Affordability Start Date'
     },
     affordability_expiration: {
         dataType: 'varchar(255)',
