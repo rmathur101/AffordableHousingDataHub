@@ -8,7 +8,7 @@ AffordableHousingDataHub uses node.js on the backend and react.js on the front e
 1. npm install.
 2. create a folder called 'config' with the files in the folder called 'sample_config'. by default git will ignore this directory under the app folder.
 3. create a file called 'config_path.txt' within the app folder. by default git will ignore this file. put the absolute path to the config folder you created. for example, /Users/britney/Desktop/affordable_housing_data_hub/app/config/
-4. make sure that you have mysql installed on whatever machine is running the app. the version used for this project was version: 8.0.12 MySQL Community Server.
+4. make sure that you have mysql installed on whatever machine is running the app. the version used for this project was version: 8.0.12 MySQL Community Server. if you have to define a scheme or a database name, call it 'AffordableHousingDataHub'
 5. under app/sql you'll find development_db.sql. import this into your sql instance, and it will create / replace with a database called AffordableHousingDataHub. This will contain property data as of 12/18/18. It will also include one user account that you can use for testing. Email is 'test@gmail.com'. Password is 'password'.
 6. in your config directory, add the following values for each of the files
   - db_user.txt: user with read / write access to database AffordableHousingDataHub
