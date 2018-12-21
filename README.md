@@ -22,4 +22,4 @@ AffordableHousingDataHub uses node.js on the backend and react.js on the front e
 8. run `npm run dev` to run the backend in development. this will run the node server and watch for any backend changes.
 	- NOTE: on production we currently use the node package `pm2` which is a process manager. we run app.js with the NODE_ENV=PRODUCTION. it is advised to install `pm2` globally for production.
 9. run `npm run build-dev`. this will bunlde js files from public/js into public/dist and watch for any changes in public/js.
-10. note that node version 9.2.1 was used to run this app in production. regardless, a high enough version of node needs to be used such that await/async will work.
+10. note that node version 9.2.1 was used to run this app in production. npm version 5.6.0 was used.
