@@ -156,7 +156,7 @@ async function getUpdatePropertiesList() {
 
 	var res = query(
 		'AffordableHousingDataHub',
-		'SELECT property_name, funding_source_aahc, funding_source_hatc, funding_source_tdhca, funding_source_nhcd, data_source_ahi, data_source_tdhca, data_source_atc_guide, Properties.id, property_name, address, phone, Properties.email as email, website, city, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id WHERE is_duplicate != 1'
+		'SELECT property_name, funding_source_aahc, funding_source_hatc, funding_source_tdhca, funding_source_nhcd, data_source_ahi, data_source_tdhca, data_source_atc_guide, Properties.id, property_name, address, phone, Properties.email as email, website, city, total_income_restricted_units, total_section_8_units, zipcode, Users.email as assigned_user_email FROM Properties LEFT JOIN Users ON Properties.assigned_user_id = Users.id WHERE is_duplicate != 1 AND outside_etj !=1'
 	);
 
 	return res;
@@ -227,7 +227,7 @@ async function getAllProperties() {
 	var fieldsString = includeFields.join(', ');
 	var res = await query(
 		'AffordableHousingDataHub',
-		`SELECT ${fieldsString} FROM Properties WHERE is_duplicate != 1`
+		`SELECT ${fieldsString} FROM Properties WHERE is_duplicate != 1 AND outside_etj != 1`
 	);
 	return res;
 }
@@ -235,7 +235,7 @@ async function getAllProperties() {
 async function getAllPropertiesAllFields() {
 	var res = await query(
 		'AffordableHousingDataHub',
-		'SELECT * FROM Properties where is_duplicate != 1'
+		'SELECT * FROM Properties where is_duplicate != 1 AND outside_etj != 1'
 	);
 	return res;
 }
