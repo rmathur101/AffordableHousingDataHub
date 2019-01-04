@@ -150,6 +150,13 @@ class PropertyDataGroupEdit extends Component {
 			return false;
 		}
 
+		function requiresDropDown(fieldName){
+			if(fieldName=="unit_type"){
+				return true;
+			}
+			return false;
+		}
+
 		var getVerifiedInfo = (field) => {
 
 			var elem1 = <span></span>;
@@ -170,7 +177,21 @@ class PropertyDataGroupEdit extends Component {
 			if (isTypeText(dataType) || isTypeNum(dataType)) {
 				return (
 					<span className='form-group'>
-						<input type={isTypeText(dataType) ? 'text' : 'number'} readOnly={!isEditable} className='form-control text-or-num-input' id={field} defaultValue={(value || value == 0) ? value : ''} onChange={this.onInputChange.bind(this, field)} />
+						
+						{requiresDropDown(field) ? (
+						 	<select type="text" readOnly={!isEditable} className='form-control text-or-num-input' id={field} onChange={this.onInputChange.bind(this, field)}>
+							  <option value="ADU">ADU</option>
+							  <option value="Single Family">Single Family</option>
+							  <option value="Duplex">Duplex</option>
+							  <option value="Triplex">Triplex</option>
+							  <option value="Fourplex">Fourplex</option>
+							  <option value="Multi-Family">Multi-Family</option>
+							</select> 
+						) : (
+							<input type={isTypeText(dataType) ? 'text' : 'number'} readOnly={!isEditable} className='form-control text-or-num-input' id={field} defaultValue={(value || value == 0) ? value : ''} onChange={this.onInputChange.bind(this, field)} />
+						)}
+
+
 					{ field != 'id' &&
 						/* exclude verify button from id */
 						<span>
